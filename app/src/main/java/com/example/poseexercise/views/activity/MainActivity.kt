@@ -18,21 +18,12 @@ import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var prefManager: PrefManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-        prefManager = PrefManager(this)
-        if (prefManager.isFirstTimeLaunch()) {
-            // Show the onboarding screen
-            startActivity(Intent(this, OnboardingActivity::class.java))
-            // Close the main activity
-            finish()
-        }
 
         increaseNotificationVolume()
 

@@ -24,11 +24,6 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".views.activity.OnboardingActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-
-        <activity
             android:name=".views.activity.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>

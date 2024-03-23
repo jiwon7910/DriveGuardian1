@@ -124,7 +124,6 @@ class WorkOutFragment : Fragment(), MemoryManagement {
     private lateinit var addPlanViewModel: AddPlanViewModel
     private lateinit var startButton: Button
     private lateinit var buttonCompleteExercise: Button
-    private lateinit var buttonCancelExercise: Button
     private lateinit var cameraFlipFAB: FloatingActionButton
     private lateinit var confIndicatorView: ImageView
     private lateinit var currentExerciseTextView: TextView
@@ -163,7 +162,7 @@ class WorkOutFragment : Fragment(), MemoryManagement {
         cameraFlipFAB = view.findViewById(R.id.facing_switch)
         startButton = view.findViewById(R.id.button_start_exercise)
         buttonCompleteExercise = view.findViewById(R.id.button_complete_exercise)
-        buttonCancelExercise = view.findViewById(R.id.button_cancel_exercise)
+        // buttonCancelExercise = view.findViewById(R.id.button_cancel_exercise)
         timerTextView = view.findViewById(R.id.timerTV)
         timerRecordIcon = view.findViewById(R.id.timerRecIcon)
         confIndicatorView = view.findViewById(R.id.confidenceIndicatorView)
@@ -205,7 +204,7 @@ class WorkOutFragment : Fragment(), MemoryManagement {
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             cameraFlipFAB.visibility = View.GONE
             gifContainer.visibility = View.VISIBLE
-            buttonCancelExercise.visibility = View.VISIBLE
+            // buttonCancelExercise.visibility = View.VISIBLE
             buttonCompleteExercise.visibility = View.VISIBLE
             startButton.visibility = View.GONE
             // To disable screen timeout
@@ -214,6 +213,7 @@ class WorkOutFragment : Fragment(), MemoryManagement {
         }
 
         // Cancel the exercise
+        /*
         buttonCancelExercise.setOnClickListener {
             synthesizeSpeech("Workout Cancelled")
             stopMediaTimer()
@@ -226,6 +226,8 @@ class WorkOutFragment : Fragment(), MemoryManagement {
             // stop triggering classification process
             cameraViewModel.triggerClassification.value = false
         }
+
+         */
 
         // 10 reps =  3.2 for push up -> 1 reps = 3.2/10
         // Complete the exercise
@@ -978,7 +980,7 @@ class WorkOutFragment : Fragment(), MemoryManagement {
         }
         startButton.setOnClickListener(null)
         buttonCompleteExercise.setOnClickListener(null)
-        buttonCancelExercise.setOnClickListener(null)
+        // buttonCancelExercise.setOnClickListener(null)
         cameraFlipFAB.setOnClickListener(null)
         skipButton.setOnClickListener(null)
         workoutRecyclerView.adapter = null
