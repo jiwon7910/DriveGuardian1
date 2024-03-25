@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.homeFragment // Jetpack Navigation
             ),
             CbnMenuItem(
-                R.drawable.workout,
-                R.drawable.avd_workout,
+                R.drawable.detect,
+                R.drawable.avd_detect,
                 R.id.workoutFragment
             ),
             CbnMenuItem(
