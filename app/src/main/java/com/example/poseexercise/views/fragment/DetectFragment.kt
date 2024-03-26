@@ -81,7 +81,7 @@ import java.util.TimerTask
 /**
  * Fragment responsible for handling the workout process, camera usage, and exercise tracking.
  */
-class WorkOutFragment : Fragment(), MemoryManagement {
+class DetectFragment : Fragment(), MemoryManagement {
     private var screenOn = false
     private var previewView: PreviewView? = null
     private var graphicOverlay: GraphicOverlay? = null
@@ -157,7 +157,7 @@ class WorkOutFragment : Fragment(), MemoryManagement {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view: View = inflater.inflate(R.layout.fragment_workout, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_detect, container, false)
         // Linking all button and controls
         cameraFlipFAB = view.findViewById(R.id.facing_switch)
         startButton = view.findViewById(R.id.button_start_exercise)
