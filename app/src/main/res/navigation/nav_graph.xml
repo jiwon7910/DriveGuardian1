@@ -19,7 +19,7 @@
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_homeFragment_to_workoutFragment"
-            app:destination="@id/workoutFragment" />
+            app:destination="@id/detectFragment" />
     </fragment>
     <fragment
         android:id="@+id/planStepOneFragment"
@@ -43,26 +43,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/workoutFragment"
-        android:name="com.example.poseexercise.views.fragment.WorkOutFragment"
+        android:id="@+id/detectFragment"
+        android:name="com.example.poseexercise.views.fragment.DetectFragment"
         android:label="fragment_workout"
-        tools:layout="@layout/fragment_workout" >
+        tools:layout="@layout/fragment_detect" >
 
         <action
             android:id="@+id/action_workoutFragment_to_completedFragment"
             app:destination="@id/completedFragment" />
-        <action
-            android:id="@+id/action_workoutFragment_to_cancelFragment"
-            app:destination="@id/cancelFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/cancelFragment"
-        android:name="com.example.poseexercise.views.fragment.CancelFragment"
-        android:label="fragment_cancel"
-        tools:layout="@layout/fragment_cancel" >
-        <action
-            android:id="@+id/action_cancelFragment_to_homeFragment2"
-            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/completedFragment"

@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             CbnMenuItem(
                 R.drawable.detect,
                 R.drawable.avd_detect,
-                R.id.workoutFragment
+                R.id.detectFragment
             ),
             CbnMenuItem(
                 R.drawable.plan,

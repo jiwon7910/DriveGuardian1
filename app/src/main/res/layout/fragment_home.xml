@@ -43,7 +43,7 @@
         <!-- Workout Progress TextView -->
 
         <!-- Exercises Left TextView -->
-        <!--<TextView
+        <TextView
             android:id="@+id/exercise_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/driving" />-->
+            app:layout_constraintTop_toBottomOf="@+id/driving" />
 
         <!-- ProgressBar for workout progress -->
 
@@ -72,7 +72,7 @@
         <!--app:layout_constraintStart_toStartOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <!--<ProgressBar
+    <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -85,10 +85,10 @@
         app:layout_constraintHorizontal_bias="0.802"
         app:layout_constraintStart_toEndOf="@+id/exercise_left"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.47" />-->
+        app:layout_constraintVertical_bias="0.47" />
 
         <!-- Progress Text TextView -->
-    <!--<TextView
+    <TextView
         android:id="@+id/progress_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
         app:layout_constraintEnd_toEndOf="@+id/progress_bar"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="@+id/progress_bar"
-        app:layout_constraintTop_toTopOf="@+id/progress_bar" />-->
+        app:layout_constraintTop_toTopOf="@+id/progress_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -156,13 +156,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- ConstraintLayout for today's plans -->
-    <!--<androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_large">-->
+        android:layout_marginTop="@dimen/margin_large">
 
         <!-- Today's Plans TextView -->
-    <!--<TextView
+        <TextView
         android:id="@+id/plans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -172,10 +172,10 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- No Plan TextView -->
-    <!--<TextView
+        <TextView
         android:id="@+id/no_plan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -185,10 +185,10 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plans" />-->
+        app:layout_constraintTop_toBottomOf="@+id/plans" />
 
     <!-- RecyclerView for today's plans -->
-        <!--<androidx.recyclerview.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/today_plans"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/plans"
-            tools:listitem="@layout/plan_list_item" />-->
+            tools:listitem="@layout/plan_list_item" />
 
-    <!--</androidx.constraintlayout.widget.ConstraintLayout> -->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
