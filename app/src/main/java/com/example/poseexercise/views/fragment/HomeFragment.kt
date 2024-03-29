@@ -16,8 +16,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.poseexercise.R
-import com.example.poseexercise.adapters.PlanAdapter
-import com.example.poseexercise.adapters.RecentActivityAdapter
+//import com.example.poseexercise.adapters.PlanAdapter
+//import com.example.poseexercise.adapters.RecentActivityAdapter
 import com.example.poseexercise.data.database.AppRepository
 import com.example.poseexercise.data.plan.Plan
 import com.example.poseexercise.data.results.RecentActivityItem
@@ -55,7 +55,7 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
     private var workoutResults: List<WorkoutResult>? = null
     private lateinit var appRepository: AppRepository
     // private lateinit var addPlanViewModel: AddPlanViewModel
-    private lateinit var adapter: PlanAdapter
+    // private lateinit var adapter: PlanAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
