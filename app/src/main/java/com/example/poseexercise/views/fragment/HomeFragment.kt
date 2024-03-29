@@ -42,7 +42,7 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
     private val TAG = "DriveGuardian Home Fragment"
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var resultViewModel: ResultViewModel
-    private lateinit var recentActivityRecyclerView: RecyclerView
+    //private lateinit var recentActivityRecyclerView: RecyclerView
     // private lateinit var recentActivityAdapter: RecentActivityAdapter
     private var planList: List<Plan>? = emptyList()
     private var notCompletePlanList: MutableList<Plan>? = Collections.emptyList()
