@@ -17,7 +17,7 @@ import androidx.navigation.findNavController
 import com.example.poseexercise.R
 import com.example.poseexercise.data.plan.Plan
 import com.example.poseexercise.util.MemoryManagement
-import com.example.poseexercise.viewmodels.AddPlanViewModel
+//import com.example.poseexercise.viewmodels.AddPlanViewModel
 import kotlinx.coroutines.launch
 
 /**
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
  * and select the days of the week for the exercise plan.
  */
 class PlanStepTwoFragment : Fragment(), MemoryManagement {
-    private lateinit var addPlanViewModel: AddPlanViewModel
+    //private lateinit var addPlanViewModel: AddPlanViewModel
     private var mExerciseName: String = ""
     private var mKcal: Double = 0.0
     private val selectedDays = mutableListOf<String>()
@@ -80,7 +80,7 @@ class PlanStepTwoFragment : Fragment(), MemoryManagement {
             if (repeatEditText.text.isEmpty() || selectedDays.size == 0) {
                 showErrorMessage()
             } else {
-                addPlanViewModel = ViewModelProvider(this)[AddPlanViewModel::class.java]
+                //addPlanViewModel = ViewModelProvider(this)[AddPlanViewModel::class.java]
                 var days = ""
                 for (i in selectedDays) {
                     days += "$i "
@@ -88,7 +88,7 @@ class PlanStepTwoFragment : Fragment(), MemoryManagement {
                 val repeatCount = repeatEditText.text.toString()
                 val newPlan = Plan(0, mExerciseName, mKcal, repeatCount.toInt(), days)
                 lifecycleScope.launch {
-                    addPlanViewModel.insert(newPlan)
+                    //addPlanViewModel.insert(newPlan)
                 }
                 view.findNavController().navigate(R.id.action_planStepTwoFragment_to_homeFragment)
             }

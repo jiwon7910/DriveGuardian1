@@ -38,7 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.poseexercise.R
-import com.example.poseexercise.adapters.ExerciseGifAdapter
+// import com.example.poseexercise.adapters.ExerciseGifAdapter
 import com.example.poseexercise.adapters.WorkoutAdapter
 import com.example.poseexercise.data.plan.ExerciseLog
 import com.example.poseexercise.data.plan.ExercisePlan
@@ -61,7 +61,7 @@ import com.example.poseexercise.util.MyUtils.Companion.convertTimeStringToMinute
 import com.example.poseexercise.util.MyUtils.Companion.databaseNameToClassification
 import com.example.poseexercise.util.MyUtils.Companion.exerciseNameToDisplay
 import com.example.poseexercise.util.VisionImageProcessor
-import com.example.poseexercise.viewmodels.AddPlanViewModel
+// import com.example.poseexercise.viewmodels.AddPlanViewModel
 import com.example.poseexercise.viewmodels.CameraXViewModel
 import com.example.poseexercise.viewmodels.HomeViewModel
 import com.example.poseexercise.viewmodels.ResultViewModel
@@ -121,7 +121,7 @@ class DetectFragment : Fragment(), MemoryManagement {
     private lateinit var workoutRecyclerView: RecyclerView
     private lateinit var workoutAdapter: WorkoutAdapter
     private lateinit var homeViewModel: HomeViewModel
-    private lateinit var addPlanViewModel: AddPlanViewModel
+    // private lateinit var addPlanViewModel: AddPlanViewModel
     private lateinit var startButton: Button
     private lateinit var buttonCompleteExercise: Button
     private lateinit var cameraFlipFAB: FloatingActionButton
@@ -133,7 +133,7 @@ class DetectFragment : Fragment(), MemoryManagement {
     private lateinit var loadingTV: TextView
     private lateinit var loadProgress: ProgressBar
     private lateinit var completeAllExercise: TextView
-    private lateinit var skipButton: Button
+    // private lateinit var skipButton: Button
     private lateinit var textToSpeech: TextToSpeech
     private lateinit var yogaPoseImage: ImageView
 
@@ -149,7 +149,7 @@ class DetectFragment : Fragment(), MemoryManagement {
                 .getInstance(requireActivity().application)
         )[CameraXViewModel::class.java]
         resultViewModel = ResultViewModel(MyApplication.getInstance())
-        addPlanViewModel = AddPlanViewModel(MyApplication.getInstance())
+        // addPlanViewModel = AddPlanViewModel(MyApplication.getInstance())
         homeViewModel = HomeViewModel(MyApplication.getInstance())
     }
 
@@ -174,7 +174,7 @@ class DetectFragment : Fragment(), MemoryManagement {
         confidenceTextView.visibility = View.INVISIBLE
         loadingTV = view.findViewById(R.id.loadingStatus)
         loadProgress = view.findViewById(R.id.loadingProgress)
-        skipButton = view.findViewById(R.id.skipButton)
+        // skipButton = view.findViewById(R.id.skipButton)
         workoutRecyclerView = view.findViewById(R.id.workoutRecycleViewArea)
         workoutRecyclerView.layoutManager = LinearLayoutManager(activity)
         yogaPoseImage = view.findViewById(R.id.yogaPoseSnapShot)
@@ -185,12 +185,12 @@ class DetectFragment : Fragment(), MemoryManagement {
         // Initialize views
         super.onViewCreated(view, savedInstanceState)
         previewView = view.findViewById(R.id.preview_view)
-        val gifContainer: FrameLayout = view.findViewById(R.id.gifContainer)
+        // val gifContainer: FrameLayout = view.findViewById(R.id.gifContainer)
         graphicOverlay = view.findViewById(R.id.graphic_overlay)
         cameraFlipFAB.visibility = View.VISIBLE
         startButton.visibility = View.VISIBLE
-        gifContainer.visibility = View.GONE
-        skipButton.visibility = View.GONE
+        // gifContainer.visibility = View.GONE
+        // skipButton.visibility = View.GONE
 
 
         // start exercise button
@@ -203,7 +203,7 @@ class DetectFragment : Fragment(), MemoryManagement {
             // Add the FLAG_KEEP_SCREEN_ON flag to the activity's window, keeping the screen on
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             cameraFlipFAB.visibility = View.GONE
-            gifContainer.visibility = View.VISIBLE
+            // gifContainer.visibility = View.VISIBLE
             // buttonCancelExercise.visibility = View.VISIBLE
             buttonCompleteExercise.visibility = View.VISIBLE
             startButton.visibility = View.GONE
@@ -334,12 +334,12 @@ class DetectFragment : Fragment(), MemoryManagement {
             val uniqueExercises = mutableSetOf<String>()
 
             // Create exerciseGifs list based on notCompletedExercise, avoiding duplicates
-            val exerciseGifs = mutableListOf<Pair<String, Int>>()
+            // val exerciseGifs = mutableListOf<Pair<String, Int>>()
 
             // Function to add exercise to the list if it's not already present
             fun addExerciseIfNotPresent(exercise: String) {
                 if (uniqueExercises.add(exercise)) {
-                    exerciseGifs.add(exercise to mapExerciseToDrawable(exercise))
+                    // exerciseGifs.add(exercise to mapExerciseToDrawable(exercise))
                 }
             }
 
@@ -357,6 +357,7 @@ class DetectFragment : Fragment(), MemoryManagement {
             addExerciseIfNotPresent(exerciseNameToDisplay(YOGA_TREE_CLASS))
 
             val viewPager: ViewPager2 = view.findViewById(R.id.exerciseViewPager)
+            /*
             val exerciseGifAdapter = ExerciseGifAdapter(exerciseGifs) {
                 // Handle skip button click here
                 // Transition to the "Start" button
@@ -368,6 +369,8 @@ class DetectFragment : Fragment(), MemoryManagement {
                 cameraFlipFAB.visibility = View.GONE
             }
             viewPager.adapter = exerciseGifAdapter
+
+             */
 
             notCompletedExercise?.forEach { item ->
                 val exercisePlan =
@@ -459,14 +462,17 @@ class DetectFragment : Fragment(), MemoryManagement {
                                     completeAllExercise.visibility = View.VISIBLE
                                 }, 5000)
                             }
+
                             // Update complete status for existing plan
                             if (data.planId != null) {
                                 lifecycleScope.launch(Dispatchers.IO) {
+                                    /*
                                     addPlanViewModel.updateComplete(
                                         true,
                                         System.currentTimeMillis(),
                                         data.planId
                                     )
+                                     */
                                 }
                             }
                         } else if (data.isComplete) {
@@ -490,6 +496,7 @@ class DetectFragment : Fragment(), MemoryManagement {
                         }
                         // display Current result when the increment happen
                         displayResult(key, exerciseLog)
+
 
                         // update the display list of all exercise progress when the increment happen
                         val exerciseList = exerciseLog.getExerciseDataList()
@@ -546,6 +553,7 @@ class DetectFragment : Fragment(), MemoryManagement {
 
 
     // Map the notCompletedExercise list to a list of pairs to show gifs
+    /*
     private fun mapExerciseToDrawable(exercise: String): Int {
         return when (exercise) {
             exerciseNameToDisplay(PUSHUPS_CLASS) -> R.drawable.pushup
@@ -560,6 +568,8 @@ class DetectFragment : Fragment(), MemoryManagement {
             else -> R.drawable.warrior_yoga_gif
         }
     }
+
+     */
 
     /**
      * List of yoga images
@@ -982,7 +992,7 @@ class DetectFragment : Fragment(), MemoryManagement {
         buttonCompleteExercise.setOnClickListener(null)
         // buttonCancelExercise.setOnClickListener(null)
         cameraFlipFAB.setOnClickListener(null)
-        skipButton.setOnClickListener(null)
+        // skipButton.setOnClickListener(null)
         workoutRecyclerView.adapter = null
     }
 

@@ -12,6 +12,8 @@ import com.example.poseexercise.R
 /**
  * Initialize the ExerciseGifAdapter class, responsible for managing the GIFs in the RecyclerView
  */
+
+/*
 class ExerciseGifAdapter(
     private val exerciseGifs: List<Pair<String, Int>>,
     private val onSkipClickListener: () -> Unit
@@ -48,3 +50,5 @@ class ExerciseGifAdapter(
         val skipButton: Button = itemView.findViewById(R.id.skipButton)
     }
 }
+
+ */

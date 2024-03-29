@@ -62,96 +62,47 @@
             android:id="@+id/driving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:text="@string/driving"
             android:textColor="@color/white"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="33dp"
-            tools:layout_editor_absoluteY="37dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/exercise_left"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
         <!--app:layout_constraintBottom_toTopOf="@+id/exercise_left"-->
         <!--app:layout_constraintStart_toStartOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_xlarge"
-        android:contentDescription="@string/progress_image"
-        android:indeterminateOnly="false"
-        android:progressDrawable="@drawable/circle_home"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.802"
-        app:layout_constraintStart_toEndOf="@+id/exercise_left"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.47" />
-
-        <!-- Progress Text TextView -->
-    <TextView
-        android:id="@+id/progress_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/white"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
-        app:layout_constraintEnd_toEndOf="@+id/progress_bar"
-        app:layout_constraintHorizontal_bias="0.50"
-        app:layout_constraintStart_toStartOf="@+id/progress_bar"
-        app:layout_constraintTop_toTopOf="@+id/progress_bar" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-
-<!-- Recent Activity TextView -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:text="@string/recent_activity"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:listitem="@layout/card_recent_activity" />
-
-    <!-- ConstraintLayout for recent activity -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="338dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_bigrectangle"
-        android:orientation="vertical">
-
-        <!-- TextView for No Activity Message -->
-        <TextView
-            android:id="@+id/no_activity_message"
+        <ProgressBar
+            android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/no_activities_yet"
-            android:textColor="@color/primaryColor"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/recentActivityRecyclerView"
-            app:layout_constraintEnd_toEndOf="@+id/recentActivityRecyclerView" />
-
-        <!-- RecyclerView for recent activity -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recentActivityRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginStart="@dimen/margin_xlarge"
+            android:contentDescription="@string/progress_image"
+            android:indeterminateOnly="false"
+            android:progressDrawable="@drawable/circle_home"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.802"
+            app:layout_constraintStart_toEndOf="@+id/exercise_left"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/card_recent_activity" />
+            app:layout_constraintVertical_bias="0.47" />
+
+        <!-- Progress Text TextView -->
+        <TextView
+            android:id="@+id/progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
+            app:layout_constraintEnd_toEndOf="@+id/progress_bar"
+            app:layout_constraintHorizontal_bias="0.50"
+            app:layout_constraintStart_toStartOf="@+id/progress_bar"
+            app:layout_constraintTop_toTopOf="@+id/progress_bar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -160,45 +111,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_large">
-
-        <!-- Today's Plans TextView -->
-        <TextView
-        android:id="@+id/plans"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_large"
-        android:text="@string/plan_today"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- No Plan TextView -->
-        <TextView
-        android:id="@+id/no_plan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_large"
-        android:textColor="@color/primaryColor"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plans" />
-
-    <!-- RecyclerView for today's plans -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/today_plans"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="70dp"
-            android:visibility="visible"
-            app:layoutManager="LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/plans"
-            tools:listitem="@layout/plan_list_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

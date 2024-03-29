@@ -25,7 +25,7 @@ import com.example.poseexercise.data.results.WorkoutResult
 import com.example.poseexercise.util.MemoryManagement
 import com.example.poseexercise.util.MyApplication
 import com.example.poseexercise.util.MyUtils
-import com.example.poseexercise.viewmodels.AddPlanViewModel
+// import com.example.poseexercise.viewmodels.AddPlanViewModel
 import com.example.poseexercise.viewmodels.HomeViewModel
 import com.example.poseexercise.viewmodels.ResultViewModel
 import kotlinx.coroutines.Dispatchers
@@ -37,16 +37,16 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.min
 
-class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
+class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement {
     @Suppress("PropertyName")
     private val TAG = "DriveGuardian Home Fragment"
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var resultViewModel: ResultViewModel
-    private lateinit var recentActivityRecyclerView: RecyclerView
-    private lateinit var recentActivityAdapter: RecentActivityAdapter
+    //private lateinit var recentActivityRecyclerView: RecyclerView
+    // private lateinit var recentActivityAdapter: RecentActivityAdapter
     private var planList: List<Plan>? = emptyList()
     private var notCompletePlanList: MutableList<Plan>? = Collections.emptyList()
-    private var today: String = DateFormat.format("EEEE", Date()) as String
+    // private var today: String = DateFormat.format("EEEE", Date()) as String
     private lateinit var progressText: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var noPlanTV: TextView
@@ -54,7 +54,7 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
     private lateinit var progressPercentage: TextView
     private var workoutResults: List<WorkoutResult>? = null
     private lateinit var appRepository: AppRepository
-    private lateinit var addPlanViewModel: AddPlanViewModel
+    // private lateinit var addPlanViewModel: AddPlanViewModel
     private lateinit var adapter: PlanAdapter
 
     override fun onCreateView(
@@ -69,18 +69,18 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
         super.onViewCreated(view, savedInstanceState)
         // Initialize RecyclerView and its adapter for recent activity
         progressText = view.findViewById(R.id.exercise_left)
-        recyclerView = view.findViewById(R.id.today_plans)
-        recentActivityRecyclerView = view.findViewById(R.id.recentActivityRecyclerView)
-        recentActivityAdapter = RecentActivityAdapter(emptyList())
-        recentActivityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recentActivityRecyclerView.adapter = recentActivityAdapter
-        noPlanTV = view.findViewById(R.id.no_plan)
+        // recyclerView = view.findViewById(R.id.today_plans)
+        // recentActivityRecyclerView = view.findViewById(R.id.recentActivityRecyclerView)
+        // recentActivityAdapter = RecentActivityAdapter(emptyList())
+        // recentActivityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        // recentActivityRecyclerView.adapter = recentActivityAdapter
+        // noPlanTV = view.findViewById(R.id.no_plan)
         progressBar = view.findViewById(R.id.progress_bar)
         progressPercentage = view.findViewById(R.id.progress_text)
         appRepository = AppRepository(requireActivity().application)
         // Initialize ViewModel
         resultViewModel = ResultViewModel(MyApplication.getInstance())
-        addPlanViewModel = AddPlanViewModel(MyApplication.getInstance())
+        // addPlanViewModel = AddPlanViewModel(MyApplication.getInstance())
         lifecycleScope.launch {
             val workoutResults = resultViewModel.getRecentWorkout()
             // Call the function to load data and set up the chart
@@ -95,8 +95,9 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
                     reps = "${it.repeatedCount} reps"
                 )
             }
+            /*
             // Update the adapter with the transformed data
-            recentActivityAdapter.updateData(recentActivityItems ?: emptyList())
+             recentActivityAdapter.updateData(recentActivityItems ?: emptyList())
             // Check if the recentActivityItems list is empty
             if (recentActivityItems.isNullOrEmpty()) {
                 recentActivityRecyclerView.isVisible = false
@@ -107,19 +108,22 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
             } else {
                 recentActivityRecyclerView.isVisible = true
             }
+             */
+
         }
         // Initialize home view model, RecyclerView and its adapter for today's plans
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         // get the list of plans from database
         lifecycleScope.launch(Dispatchers.IO) {
-            val result1 = withContext(Dispatchers.IO) { homeViewModel.getPlanByDay(today) }
-            val result2 = withContext(Dispatchers.IO) { homeViewModel.getNotCompletePlans(today) }
+            //val result1 = withContext(Dispatchers.IO) { homeViewModel.getPlanByDay(today) }
+            //val result2 = withContext(Dispatchers.IO) { homeViewModel.getNotCompletePlans(today) }
             withContext(Dispatchers.Main) {
-                updateResultFromDatabase(result1, result2)
+                // updateResultFromDatabase(result1, result2)
             }
         }
     }
 
+    /*
     private fun updateResultFromDatabase(plan: List<Plan>?, notCompleted: MutableList<Plan>?) {
         planList = plan
         notCompletePlanList = notCompleted
@@ -129,7 +133,7 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
                 it.map { plan ->
                     if (plan.timeCompleted?.let { it1 -> getDayFromTimestamp(it1) } != today) {
                         lifecycleScope.launch {
-                            addPlanViewModel.updateComplete(false, null, plan.id)
+                            // addPlanViewModel.updateComplete(false, null, plan.id)
                         }
                     }
                 }
@@ -145,8 +149,10 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
         recyclerView.adapter = adapter
         adapter.setListener(this)
         notCompletePlanList?.let { adapter.setPlans(it) }
-        updateEmptyPlan(notCompletePlanList)
+        // updateEmptyPlan(notCompletePlanList)
     }
+
+     */
 
 
     private fun loadDataAndSetupChart() {
@@ -157,12 +163,14 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
             val todayWorkoutResults = workoutResults?.filter {
                 isToday(it.timestamp)
             }
+            /*
             // Observe exercise plans from the database
             withContext(Dispatchers.Main) {
                 appRepository.allPlans.observe(viewLifecycleOwner) { exercisePlans ->
                     // Filter exercise plans for today
                     val todayExercisePlans =
                         exercisePlans?.filter { it.selectedDays.contains(today) }
+
                     // Calculate progress and update UI
                     val totalPlannedRepetitions = todayExercisePlans?.sumOf { it.repeatCount } ?: 0
                     val totalCompletedRepetitions =
@@ -174,8 +182,11 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
                     }
                     // Update the ProgressBar and TextView with the progress percentage
                     updateProgressViews(progressPercentage)
+
                 }
             }
+
+             */
         }
     }
 
@@ -205,6 +216,7 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
             false
         }
     }
+    /*
 
     // Get the day from which the plan was marked as complete
     private fun getDayFromTimestamp(time: Long, locale: Locale = Locale.getDefault()): String? {
@@ -218,6 +230,7 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
     }
 
     // Delete the plan when user click on delete icon
+
     override fun onItemClicked(planId: Int, position: Int) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         // Show a dialog for user to confirm the choice
@@ -227,7 +240,7 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
             .setPositiveButton("Delete") { dialog, _ ->
                 // Delete the plan from database
                 lifecycleScope.launch {
-                    addPlanViewModel.deletePlan(planId)
+                    // addPlanViewModel.deletePlan(planId)
                 }
                 notCompletePlanList?.removeAt(position)
                 adapter.notifyItemRemoved(position)
@@ -251,6 +264,7 @@ class HomeFragment : Fragment(), PlanAdapter.ItemListener, MemoryManagement {
             recyclerView.visibility = View.VISIBLE
         }
     }
+     */
 
     override fun clearMemory() {
         planList = null

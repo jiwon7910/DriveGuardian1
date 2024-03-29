@@ -40,10 +40,11 @@ class CompletedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val workoutResultText: TextView = view.findViewById(R.id.workoutResult_textView)
-        val workoutTimerText: TextView = view.findViewById(R.id.workoutTimer_textView)
+        // val workoutResultText: TextView = view.findViewById(R.id.workoutResult_textView)
+        // val workoutTimerText: TextView = view.findViewById(R.id.workoutTimer_textView)
 
         // Display the timer of the workout
+        /*
         MainActivity.workoutTimer?.let {
             workoutTimerText.text = getString(R.string.workoutResultDisplay, it)
         }
@@ -54,6 +55,7 @@ class CompletedFragment : Fragment() {
         } ?: run {
             workoutResultText.text = getString(R.string.noWorkoutResultDisplay)
         }
+        */
 
         // Reset workout data in the MainActivity
         MainActivity.apply {
