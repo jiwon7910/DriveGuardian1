@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
  * This fragment allows the user to input details such as the exercise name, repetition count,
  * and select the days of the week for the exercise plan.
  */
+/*
 class PlanStepTwoFragment : Fragment(), MemoryManagement {
     //private lateinit var addPlanViewModel: AddPlanViewModel
     private var mExerciseName: String = ""
@@ -132,3 +133,5 @@ class PlanStepTwoFragment : Fragment(), MemoryManagement {
         super.onDestroy()
     }
 }
+
+ */

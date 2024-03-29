@@ -44,11 +44,14 @@ class MainActivity : AppCompatActivity() {
                 R.drawable.avd_detect,
                 R.id.detectFragment
             ),
+            /*
             CbnMenuItem(
                 R.drawable.plan,
                 R.drawable.avd_plan,
                 R.id.planStepOneFragment
             ),
+
+             */
             CbnMenuItem(
                 R.drawable.profile,
                 R.drawable.avd_profile,

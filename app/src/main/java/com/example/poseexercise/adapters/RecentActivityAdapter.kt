@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.poseexercise.R
 import com.example.poseexercise.data.results.RecentActivityItem
 
+/*
+
 class RecentActivityAdapter(private var recentActivityList: List<RecentActivityItem>) :
     RecyclerView.Adapter<RecentActivityAdapter.MyViewHolder>() {
 
@@ -51,3 +53,4 @@ class RecentActivityAdapter(private var recentActivityList: List<RecentActivityI
 
 }
 
+ */

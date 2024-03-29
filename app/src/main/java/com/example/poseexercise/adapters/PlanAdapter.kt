@@ -21,12 +21,13 @@ import com.example.poseexercise.posedetector.classification.PoseClassifierProces
 import com.example.poseexercise.util.MyUtils.Companion.databaseNameToClassification
 import java.util.Collections
 
+/*
+
 class PlanAdapter internal constructor(context: Context) :
     RecyclerView.Adapter<PlanAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var planList: MutableList<Plan> = Collections.emptyList()
     private lateinit var listener: ItemListener
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val workoutImage: ImageView = itemView.findViewById(R.id.imageView)
@@ -101,3 +102,5 @@ class PlanAdapter internal constructor(context: Context) :
     }
 
 }
+
+ */

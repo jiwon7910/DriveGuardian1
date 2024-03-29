@@ -26,6 +26,8 @@ import com.google.android.material.chip.Chip
  * @param context The context of the activity or fragment using the adapter.
  * @param navController The NavController for navigating to other fragments.
  */
+/*
+
 class ExerciseAdapter internal constructor(
     context: Context,
     private val navController: NavController
@@ -80,7 +82,7 @@ class ExerciseAdapter internal constructor(
                 "caloriesPerRep" to currentExercise.calorie
             )
             // Navigate to another fragment using the NavController
-            navController.navigate(R.id.action_planStepOneFragment_to_planStepTwoFragment, bundle)
+            // navController.navigate(R.id.action_planStepOneFragment_to_planStepTwoFragment, bundle)
         }
     }
 
@@ -121,3 +123,4 @@ class ExerciseAdapter internal constructor(
     }
 }
 
+ */

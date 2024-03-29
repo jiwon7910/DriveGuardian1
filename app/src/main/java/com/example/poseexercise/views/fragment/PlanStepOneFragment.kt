@@ -10,7 +10,7 @@ import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.poseexercise.R
-import com.example.poseexercise.adapters.ExerciseAdapter
+// import com.example.poseexercise.adapters.ExerciseAdapter
 import com.example.poseexercise.data.plan.Constants
 import com.example.poseexercise.util.MemoryManagement
 import com.google.android.material.chip.Chip
@@ -19,6 +19,7 @@ import com.google.android.material.chip.ChipGroup
 /**
  * Displays a [RecyclerView] of exercise types.
  */
+/*
 class PlanStepOneFragment : Fragment(), MemoryManagement {
     private val exerciseList = Constants.getExerciseList()
     private var searchQuery: CharSequence? = null
@@ -65,3 +66,5 @@ class PlanStepOneFragment : Fragment(), MemoryManagement {
     }
 
 }
+
+ */

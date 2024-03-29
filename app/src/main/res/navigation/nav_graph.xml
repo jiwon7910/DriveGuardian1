@@ -12,34 +12,11 @@
         tools:layout="@layout/fragment_home" >
 
         <action
-            android:id="@+id/action_homeFragment_to_planStepOneFragment"
-            app:destination="@id/planStepOneFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_homeFragment_to_workoutFragment"
             app:destination="@id/detectFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/planStepOneFragment"
-        android:name="com.example.poseexercise.views.fragment.PlanStepOneFragment"
-        android:label="fragment_plan_step_one"
-        tools:layout="@layout/fragment_plan_step_one" >
-
-        <action
-            android:id="@+id/action_planStepOneFragment_to_planStepTwoFragment"
-            app:destination="@id/planStepTwoFragment" >
-        </action>
-    </fragment>
-    <fragment
-        android:id="@+id/planStepTwoFragment"
-        android:name="com.example.poseexercise.views.fragment.PlanStepTwoFragment"
-        android:label="fragment_plan_step_two"
-        tools:layout="@layout/fragment_plan_step_two">
-        <action
-            android:id="@+id/action_planStepTwoFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
