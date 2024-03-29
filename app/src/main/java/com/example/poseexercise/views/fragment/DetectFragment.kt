@@ -61,7 +61,7 @@ import com.example.poseexercise.util.MyUtils.Companion.convertTimeStringToMinute
 import com.example.poseexercise.util.MyUtils.Companion.databaseNameToClassification
 import com.example.poseexercise.util.MyUtils.Companion.exerciseNameToDisplay
 import com.example.poseexercise.util.VisionImageProcessor
-import com.example.poseexercise.viewmodels.AddPlanViewModel
+// import com.example.poseexercise.viewmodels.AddPlanViewModel
 import com.example.poseexercise.viewmodels.CameraXViewModel
 import com.example.poseexercise.viewmodels.HomeViewModel
 import com.example.poseexercise.viewmodels.ResultViewModel
@@ -121,7 +121,7 @@ class DetectFragment : Fragment(), MemoryManagement {
     private lateinit var workoutRecyclerView: RecyclerView
     private lateinit var workoutAdapter: WorkoutAdapter
     private lateinit var homeViewModel: HomeViewModel
-    private lateinit var addPlanViewModel: AddPlanViewModel
+    // private lateinit var addPlanViewModel: AddPlanViewModel
     private lateinit var startButton: Button
     private lateinit var buttonCompleteExercise: Button
     private lateinit var cameraFlipFAB: FloatingActionButton
@@ -149,7 +149,7 @@ class DetectFragment : Fragment(), MemoryManagement {
                 .getInstance(requireActivity().application)
         )[CameraXViewModel::class.java]
         resultViewModel = ResultViewModel(MyApplication.getInstance())
-        addPlanViewModel = AddPlanViewModel(MyApplication.getInstance())
+        // addPlanViewModel = AddPlanViewModel(MyApplication.getInstance())
         homeViewModel = HomeViewModel(MyApplication.getInstance())
     }
 
@@ -462,14 +462,17 @@ class DetectFragment : Fragment(), MemoryManagement {
                                     completeAllExercise.visibility = View.VISIBLE
                                 }, 5000)
                             }
+
                             // Update complete status for existing plan
                             if (data.planId != null) {
                                 lifecycleScope.launch(Dispatchers.IO) {
+                                    /*
                                     addPlanViewModel.updateComplete(
                                         true,
                                         System.currentTimeMillis(),
                                         data.planId
                                     )
+                                     */
                                 }
                             }
                         } else if (data.isComplete) {
@@ -493,6 +496,7 @@ class DetectFragment : Fragment(), MemoryManagement {
                         }
                         // display Current result when the increment happen
                         displayResult(key, exerciseLog)
+
 
                         // update the display list of all exercise progress when the increment happen
                         val exerciseList = exerciseLog.getExerciseDataList()
