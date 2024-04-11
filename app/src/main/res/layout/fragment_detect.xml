@@ -38,16 +38,16 @@
             android:id="@+id/confidenceIndicatorView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:alpha="0.7"
             android:layout_margin="10dp"
-            android:visibility="invisible"
-            android:contentDescription="@string/confidence_indicator"
+            android:alpha="0.7"
             android:background="@drawable/confidence_indicator"
+            android:contentDescription="@string/confidence_indicator"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
 
 
@@ -55,29 +55,29 @@
             android:id="@+id/confidenceIndicatorTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="100sp"
             android:textColor="@color/white"
+            android:textSize="100sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/confidenceIndicatorView"
             app:layout_constraintEnd_toEndOf="@+id/confidenceIndicatorView"
             app:layout_constraintStart_toStartOf="@+id/confidenceIndicatorView"
-            app:layout_constraintBottom_toBottomOf="@+id/confidenceIndicatorView"
-            app:layout_constraintTop_toTopOf="@+id/confidenceIndicatorView"/>
+            app:layout_constraintTop_toTopOf="@+id/confidenceIndicatorView" />
 
         <TextView
             android:id="@+id/completedAllExerciseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:padding="20dp"
-            android:textAlignment="center"
-            android:visibility="gone"
             android:layout_marginBottom="30dp"
+            android:padding="20dp"
             android:text="@string/completedAll"
+            android:textAlignment="center"
             android:textColor="@color/white"
+            android:textSize="25sp"
             android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/workoutRecycleViewArea"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/workoutRecycleViewArea"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Cancel Exercise Button -->
         <Button
@@ -98,21 +98,41 @@
             app:tint="@color/white" />
 
         <!-- Start Exercise Button -->
-        <Button
-            android:id="@+id/button_start_exercise"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_button"
-            android:textColor="@color/white"
-            app:backgroundTint="@color/primaryColor"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="27dp"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.87"
-            app:pressedTranslationZ="6dp"
-            app:tint="@color/white" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/button_start_yawn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="@string/yawn_button"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/primaryColor"
+                app:pressedTranslationZ="6dp"
+                app:tint="@color/white" />
+
+            <Button
+                android:id="@+id/button_start_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="@string/start_button"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/primaryColor"
+                app:pressedTranslationZ="6dp"
+                app:tint="@color/white" />
+        </LinearLayout>
 
         <!-- Complete Exercise Button -->
         <Button
@@ -275,6 +295,12 @@
             app:layout_constraintStart_toStartOf="@+id/loadingStatus"
             app:layout_constraintTop_toBottomOf="@+id/loadingStatus" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

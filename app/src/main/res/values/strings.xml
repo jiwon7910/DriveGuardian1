@@ -130,7 +130,8 @@
 
     <!-- Strings for Start&InProcess fragment -->
     <string name="cancel_button">Cancel</string>
-    <string name="start_button">Start</string>
+    <string name="start_button">Pose</string>
+    <string name="yawn_button">Yawn</string>
     <string name="complete_button">Complete</string>
     <string name="timer">%s</string>
     <string name="exercise_count">%1$s: %2$d</string>
@@ -203,5 +204,8 @@
     <string name="reps">Reps</string>
     <string name="completedAll">Congratulation!\nYou have completed all the planned exercise for today.</string>
 
+    <!--  from tflite app  -->
+    <string name="tfe_od_app_name" translation_description="Object Detection demo app [CHAR_LIMIT=40]">TFL Detect</string>
+    <string name="tfe_od_camera_error" translation_description="Error regarding camera support[CHAR_LIMIT=40]">This device doesn\'t support Camera2 API.</string>
 </resources>
 
