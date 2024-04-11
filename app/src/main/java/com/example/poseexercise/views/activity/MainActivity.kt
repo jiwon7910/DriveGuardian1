@@ -70,6 +70,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+        @kotlin.jvm.JvmField
+        var minimum_confidence_tf_od_api: Float? = 0.3f
         var workoutResultData: String? = null
         var workoutTimer: String? = null
     }
