@@ -42,21 +42,10 @@
 
         <!-- Workout Progress TextView -->
 
-        <!-- Exercises Left TextView -->
-        <TextView
-            android:id="@+id/exercise_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:text="@string/exercises_left"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/driving" />
 
-        <!-- ProgressBar for workout progress -->
+        <!--app:layout_constraintBottom_toTopOf="@+id/exercise_left"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/driving"
@@ -67,12 +56,9 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/exercise_left"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.493"
             tools:ignore="MissingConstraints" />
-        <!--app:layout_constraintBottom_toTopOf="@+id/exercise_left"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -84,8 +70,7 @@
             android:progressDrawable="@drawable/circle_home"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.802"
-            app:layout_constraintStart_toEndOf="@+id/exercise_left"
+            app:layout_constraintHorizontal_bias="0.80"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.47" />
 
