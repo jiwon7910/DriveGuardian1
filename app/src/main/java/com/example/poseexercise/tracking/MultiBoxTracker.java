@@ -143,7 +143,7 @@ public class MultiBoxTracker {
       boxPaint.setColor(recognition.color);
 
       float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
-      canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
+      canvas.drawRect(trackedPos, boxPaint); 
 
       final String labelString =
               !TextUtils.isEmpty(recognition.title)
