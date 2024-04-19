@@ -37,11 +37,11 @@ import kotlin.math.min
  */
 class ProfileFragment : Fragment(), MemoryManagement {
     // Declare variables for ViewModel, Chart, UI components, and data
-    private lateinit var resultViewModel: ResultViewModel
-    private lateinit var chart: BarChart
+    // private lateinit var resultViewModel: ResultViewModel
+    // private lateinit var chart: BarChart
     private var workoutResults: List<WorkoutResult>? = null
-    private lateinit var workOutTime: TextView
-    private lateinit var appRepository: AppRepository
+    // private lateinit var workOutTime: TextView
+    // private lateinit var appRepository: AppRepository
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,14 +52,15 @@ class ProfileFragment : Fragment(), MemoryManagement {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // Initialize ViewModel, Chart, and UI components
-        resultViewModel = ResultViewModel(MyApplication.getInstance())
-        chart = view.findViewById(R.id.chart)
-        workOutTime = view.findViewById(R.id.total_time)
-        appRepository = AppRepository(requireActivity().application)
+        // resultViewModel = ResultViewModel(MyApplication.getInstance())
+        // chart = view.findViewById(R.id.chart)
+        // workOutTime = view.findViewById(R.id.total_time)
+        // appRepository = AppRepository(requireActivity().application)
         // Load data and set up the chart
-        loadDataAndSetupChart()
+        //loadDataAndSetupChart()
     }
 
+    /*
     private fun loadDataAndSetupChart() {
         lifecycleScope.launch(Dispatchers.IO) {
             // Fetch workout results asynchronously
@@ -103,7 +104,7 @@ class ProfileFragment : Fragment(), MemoryManagement {
             }
         }
     }
-
+*/
     // Function to update progress views (ProgressBar and TextView)
     private fun updateProgressViews(progressPercentage: Double) {
         // Update progress views (ProgressBar and TextView)
@@ -211,7 +212,7 @@ class ProfileFragment : Fragment(), MemoryManagement {
         val totalExerciseTextView = view?.findViewById<TextView>(R.id.total_exercise)
         totalExerciseTextView?.text =
             String.format(getString(R.string.total_exercise), totalExerciseCount)
-
+/*
         val labels = totalCaloriesPerWeek.keys.toList()
         val dataSet = BarDataSet(entries, "Total Calories per Week")
         dataSet.colors = getBarColors(totalCaloriesPerWeek)
@@ -260,6 +261,7 @@ class ProfileFragment : Fragment(), MemoryManagement {
             }
         }
         chart.invalidate()
+ */
     }
 
     // Function to calculate the total exercise count for the week
@@ -292,7 +294,7 @@ class ProfileFragment : Fragment(), MemoryManagement {
     override fun clearMemory() {
         // Clear memory
         workoutResults = null
-        chart.clear()
+        //chart.clear()
     }
 
     override fun onDestroy() {

@@ -3,6 +3,7 @@ package com.example.poseexercise.views.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
@@ -65,6 +66,7 @@ import com.example.poseexercise.util.VisionImageProcessor
 import com.example.poseexercise.viewmodels.CameraXViewModel
 import com.example.poseexercise.viewmodels.HomeViewModel
 import com.example.poseexercise.viewmodels.ResultViewModel
+import com.example.poseexercise.views.activity.DetectorActivity
 import com.example.poseexercise.views.activity.MainActivity
 import com.example.poseexercise.views.fragment.preference.PreferenceUtils
 import com.example.poseexercise.views.graphic.GraphicOverlay
@@ -123,6 +125,7 @@ class DetectFragment : Fragment(), MemoryManagement {
     private lateinit var homeViewModel: HomeViewModel
     // private lateinit var addPlanViewModel: AddPlanViewModel
     private lateinit var startButton: Button
+    private lateinit var yawnButton: Button
     private lateinit var buttonCompleteExercise: Button
     private lateinit var cameraFlipFAB: FloatingActionButton
     private lateinit var confIndicatorView: ImageView
@@ -161,6 +164,7 @@ class DetectFragment : Fragment(), MemoryManagement {
         // Linking all button and controls
         cameraFlipFAB = view.findViewById(R.id.facing_switch)
         startButton = view.findViewById(R.id.button_start_exercise)
+        yawnButton = view.findViewById(R.id.button_start_yawn)
         buttonCompleteExercise = view.findViewById(R.id.button_complete_exercise)
         // buttonCancelExercise = view.findViewById(R.id.button_cancel_exercise)
         timerTextView = view.findViewById(R.id.timerTV)
@@ -189,6 +193,7 @@ class DetectFragment : Fragment(), MemoryManagement {
         graphicOverlay = view.findViewById(R.id.graphic_overlay)
         cameraFlipFAB.visibility = View.VISIBLE
         startButton.visibility = View.VISIBLE
+        yawnButton.visibility = View.VISIBLE
         // gifContainer.visibility = View.GONE
         // skipButton.visibility = View.GONE
 
@@ -211,6 +216,19 @@ class DetectFragment : Fragment(), MemoryManagement {
             //window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             cameraViewModel.triggerClassification.value = true
         }
+
+        // 현재 액티비티(MainActivity)에서 DetectorActivity로의 새로운 인텐트를 생성 및 시작
+        // 이 버튼을 누르면 DetectorActivity로 화면전환이 이루어짐 !!
+        yawnButton.setOnClickListener(View.OnClickListener { v: View? ->
+            activity?.finishAffinity()
+            startActivity(
+                Intent(
+                    context,
+                    DetectorActivity::class.java
+                )
+
+            )
+        })
 
         // Cancel the exercise
         /*
