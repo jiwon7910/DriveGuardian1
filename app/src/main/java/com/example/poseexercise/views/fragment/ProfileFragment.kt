@@ -192,16 +192,16 @@ class ProfileFragment : Fragment(), MemoryManagement {
         val totalCalories = workoutResults?.sumOf { it.calorie } ?: 0.0
 
         // Update the total calories TextView
-        val totalCaloriesTextView = view?.findViewById<TextView>(R.id.totalCaloriesTextView)
+//        val totalCaloriesTextView = view?.findViewById<TextView>(R.id.totalCaloriesTextView)
 
         val formattedTotalCalories = String.format(Locale.getDefault(), "%.2f", totalCalories)
 
-        totalCaloriesTextView?.text =
-            String.format(
-                Locale.getDefault(),
-                getString(R.string.total_calories),
-                formattedTotalCalories
-            )
+//        totalCaloriesTextView?.text =
+//            String.format(
+//                Locale.getDefault(),
+//                getString(R.string.total_calories),
+//                formattedTotalCalories
+//            )
 
         // Map entries for BarChart
         val entries = totalCaloriesPerWeek.entries.mapIndexed { index, entry ->
