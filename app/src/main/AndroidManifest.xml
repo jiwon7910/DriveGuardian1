@@ -2,13 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 필요한 하드웨어 카메라 기능 -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+    <!-- 인터넷 사용 권한 -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 외부 저장소 쓰기 권한 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- 외부 저장소 읽기 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- 카메라 사용 권한 -->
     <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION_STATE"/>
 
     <application
         android:name=".util.MyApplication"
@@ -23,26 +32,54 @@
         tools:remove="android:appComponentFactory"
         tools:targetApi="31">
 
+        <!-- DetectorActivity 추가 -->
         <activity
             android:name=".views.activity.DetectorActivity"
             android:exported="true"/>
+        <!-- CameraActivity 추가 -->
         <activity
             android:name=".views.activity.CameraActivity"
             android:exported="true" />
+        <!-- MainActivity 추가 -->
         <activity
             android:name=".views.activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
+        <!-- SplashActivity 추가 -->
         <activity
             android:name=".views.activity.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- OAuth 콜백 URL 추가 -->
+        <activity
+            android:name=".poseexercise"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- 앱의 scheme과 host를 설정 -->
+                <data
+                    android:scheme="https"
+                    android:host="yourdomain.com" />
+                <!-- 인증 서버의 콜백 URL 설정 -->
+                <data
+                    android:scheme="https"
+                    android:host="yourdomain.com"
+                    android:path="/oauth_callback" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDHaZVpVHtI8NT08al--ctZVPdT4Gr7lPg"/>
+
     </application>
 
 </manifest>

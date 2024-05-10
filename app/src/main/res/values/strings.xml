@@ -11,6 +11,10 @@
     <string name="next_onboarding">Next</string>
     <string name="get_started">Get Started</string>
 
+    <!-- Strings for login page -->
+    <string name="oauth_callback_url">https://yourdomain.com/oauth_callback</string>
+
+
     <!-- Strings for home-screen -->
     <string name="mixed_text">20 <font fgcolor="#A9A9A9">x 3</font></string>
     <string name="there_is_no_plan_set_at_the_moment">There is no plan set at the moment</string>
