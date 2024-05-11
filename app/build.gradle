@@ -164,6 +164,8 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite-gpu:2.4.0'
 
     //Google Map
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-maps:17.0.0") //문서
+//    implementation("com.google.android.gms:play-services-maps:18.0.1") //구글
+//    implementation("com.google.android.gms:play-services-maps:18.2.0") //가장 최신
 
 }
