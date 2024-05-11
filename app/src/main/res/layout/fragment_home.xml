@@ -8,6 +8,8 @@
     android:orientation="vertical"
     android:padding="@dimen/margin_large">
 
+    
+
     <!-- Greeting TextView -->
 <!--    <TextView-->
 <!--        android:layout_width="wrap_content"-->
@@ -90,19 +92,19 @@
 <!--            app:layout_constraintVertical_bias="0.47" />-->
 
         <!-- Progress Text TextView -->
-        <TextView
-            android:id="@+id/progress_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
-            app:layout_constraintEnd_toEndOf="@+id/progress_bar"
-            app:layout_constraintHorizontal_bias="0.50"
-            app:layout_constraintStart_toStartOf="@+id/progress_bar"
-            app:layout_constraintTop_toTopOf="@+id/progress_bar" />
+<!--        <TextView-->
+<!--            android:id="@+id/progress_text"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="11sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/progress_bar"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/progress_bar"-->
+<!--            app:layout_constraintHorizontal_bias="0.50"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/progress_bar"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/progress_bar" />-->
 
 <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 

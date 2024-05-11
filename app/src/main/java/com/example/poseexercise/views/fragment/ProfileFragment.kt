@@ -110,10 +110,10 @@ class ProfileFragment : Fragment(), MemoryManagement {
         // Update progress views (ProgressBar and TextView)
         val cappedProgress = min(progressPercentage, 110.0)
 
-        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
+//        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
         val progressTextView = view?.findViewById<TextView>(R.id.percentage)
 
-        progressBar?.progress = cappedProgress.toInt()
+//        progressBar?.progress = cappedProgress.toInt()
         progressTextView?.text = String.format("%.2f%%", cappedProgress)
     }
 

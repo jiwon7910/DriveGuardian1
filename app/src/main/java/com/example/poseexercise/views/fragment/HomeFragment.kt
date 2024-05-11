@@ -75,8 +75,8 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
         // recentActivityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         // recentActivityRecyclerView.adapter = recentActivityAdapter
         // noPlanTV = view.findViewById(R.id.no_plan)
-        progressBar = view.findViewById(R.id.progress_bar)
-        progressPercentage = view.findViewById(R.id.progress_text)
+//        progressBar = view.findViewById(R.id.progress_bar)
+//        progressPercentage = view.findViewById(R.id.progress_text)
         appRepository = AppRepository(requireActivity().application)
         // Initialize ViewModel
         resultViewModel = ResultViewModel(MyApplication.getInstance())

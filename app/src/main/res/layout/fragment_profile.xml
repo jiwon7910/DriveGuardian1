@@ -188,19 +188,19 @@
                     android:orientation="vertical">
 
                     <!-- ProgressBar for progress -->
-                    <ProgressBar
-                        android:id="@+id/progress_bar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/progress_image"
-                        android:indeterminateOnly="false"
-                        android:progressDrawable="@drawable/circle"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.796"
-                        app:layout_constraintStart_toEndOf="@+id/exercise_left"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.313"/>
+<!--                    <ProgressBar-->
+<!--                        android:id="@+id/progress_bar"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:contentDescription="@string/progress_image"-->
+<!--                        android:indeterminateOnly="false"-->
+<!--                        android:progressDrawable="@drawable/circle"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintHorizontal_bias="0.796"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/exercise_left"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintVertical_bias="0.313"/>-->
 
                     <!-- TextView for progress percentage -->
                     <TextView
