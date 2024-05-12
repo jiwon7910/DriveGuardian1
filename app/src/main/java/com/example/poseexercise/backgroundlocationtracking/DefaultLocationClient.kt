@@ -19,7 +19,7 @@ class DefaultLocationClient(
     private val context: Context,
     private val client: FusedLocationProviderClient
 ): LocationClient {
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "SuspiciousIndentation")
     override fun getLocationUpdates(interval: Long): Flow<Location> {
         // 구현부
         return callbackFlow {
@@ -33,7 +33,7 @@ class DefaultLocationClient(
                 if(!isGpsEnabled&& !isNetworkEnabled){
                     throw LocationClient.LocationException("Gps is disabled")
                 }
-            val request= LocationRequest.create()
+            val request= com.google.android.gms.location.LocationRequest.create()
                 .setInterval(interval)
                 .setFastestInterval(interval)
 
