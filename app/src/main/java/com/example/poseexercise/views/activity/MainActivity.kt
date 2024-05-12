@@ -1,13 +1,16 @@
 package com.example.poseexercise.views.activity
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.poseexercise.R
+import com.example.poseexercise.backgroundlocationtracking.LocationService
 import com.example.poseexercise.databinding.ActivityMainBinding
 import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
 
@@ -75,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         var workoutResultData: String? = null
         var workoutTimer: String? = null
     }
+
+
 
     /**
      * This method is used to increase the notification sound volume to max
