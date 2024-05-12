@@ -29,6 +29,7 @@ class DefaultLocationClient(
 
             val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            //여기에서 suppress 어쩌고 누름
             val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
                 if(!isGpsEnabled&& !isNetworkEnabled){
                     throw LocationClient.LocationException("Gps is disabled")
