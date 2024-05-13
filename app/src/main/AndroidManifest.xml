@@ -64,7 +64,8 @@
         <!--지도 위치 정보추가 -->
         <activity
             android:name=".LocationApp"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
 
 
         <!-- OAuth 콜백 URL 추가 -->
