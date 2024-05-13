@@ -85,31 +85,31 @@ class MainActivity : AppCompatActivity() {
             ),
             0
         )
-        setContent {
-            BackgroundLocationTrackingTheme {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Button(onClick = {
-                        Intent(applicationContext, LocationService::class.java).apply {
-                            action = LocationService.ACTION_START
-                            startService(this)
-                        }
-                    }) {
-                        Text(text = "Start")
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = {
-                        Intent(applicationContext, LocationService::class.java).apply {
-                            action = LocationService.ACTION_STOP
-                            startService(this)
-                        }
-                    }) {
-                        Text(text = "Stop")
-                    }
-                }
-            }
-        }
+//        setContent {
+//            BackgroundLocationTrackingTheme {
+//                Column(
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    Button(onClick = {
+//                        Intent(applicationContext, LocationService::class.java).apply {
+//                            action = LocationService.ACTION_START
+//                            startService(this)
+//                        }
+//                    }) {
+//                        Text(text = "Start")
+//                    }
+//                    Spacer(modifier = Modifier.height(16.dp))
+//                    Button(onClick = {
+//                        Intent(applicationContext, LocationService::class.java).apply {
+//                            action = LocationService.ACTION_STOP
+//                            startService(this)
+//                        }
+//                    }) {
+//                        Text(text = "Stop")
+//                    }
+//                }
+//            }
+//        }
     }
 
     /**
