@@ -110,7 +110,25 @@ class MainActivity : AppCompatActivity() {
 //                }
 //            }
 //        }
+
+        fun clickStart() {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                startService(this)
+            }
+        }
+
+        fun clickStop() {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                startService(this)
+            }
+        }
+
+
     }
+
+
 
     /**
      * Enables back button support. Simply navigates one element up on the stack.
