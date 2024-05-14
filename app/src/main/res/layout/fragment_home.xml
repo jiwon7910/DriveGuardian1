@@ -117,7 +117,6 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="584dp"
-        tools:context=".views.activity.MainActivity"
         android:layout_weight="1" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -131,7 +130,6 @@
         android:id="@+id/start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".views.activity.MainActivity"
         android:text="Start"/>
 <!--        android:onClick="clickStart"/>-->
 
@@ -140,7 +138,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        tools:context=".views.activity.MainActivity"
         android:text="Stop"/>
 <!--        android:onClick="clickStop"/>-->
 </LinearLayout>
