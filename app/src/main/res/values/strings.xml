@@ -212,6 +212,12 @@
     <string name="reps">Reps</string>
     <string name="completedAll">Congratulation!\nYou have completed all the planned exercise for today.</string>
 
+    <!-- for map-->
+
+    <string name="mapname">MyGoogleMaps</string>
+    <string name="my_map_api_key">AIzaSyDHaZVpVHtI8NT08al--ctZVPdT4Gr7lPg</string>
+
+
     <!--  from tflite app  -->
     <string name="tfe_od_app_name" translation_description="Object Detection demo app [CHAR_LIMIT=40]">TFL Detect</string>
     <string name="tfe_od_camera_error" translation_description="Error regarding camera support[CHAR_LIMIT=40]">This device doesn\'t support Camera2 API.</string>

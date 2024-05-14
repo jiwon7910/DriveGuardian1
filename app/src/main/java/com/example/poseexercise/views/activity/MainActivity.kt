@@ -28,6 +28,11 @@ import com.example.poseexercise.backgroundlocationtracking.LocationService
 import com.example.poseexercise.backgroundlocationtracking.ui.theme.BackgroundLocationTrackingTheme
 import com.example.poseexercise.databinding.ActivityMainBinding
 import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Main Activity and entry point for the app.
@@ -35,6 +40,7 @@ import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +55,10 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         // Instantiate the navController using the NavHostFragment
         navController = navHostFragment.navController
+
+//        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
+//        mapFragment.getMapAsync { googleMap -> addMarkers(googleMap)
+//        }
 
         val menuItems = arrayOf(
             CbnMenuItem(
