@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
@@ -111,19 +112,37 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
 
-        fun clickStart() {
-            Intent(applicationContext, LocationService::class.java).apply {
-                action = LocationService.ACTION_START
-                startService(this)
-            }
-        }
+//        fun clickStart() {
+//            Intent(applicationContext, LocationService::class.java).apply {
+//                action = LocationService.ACTION_START
+//                startService(this)
+//            }
+//        }
+//
+//        fun clickStop() {
+//            Intent(applicationContext, LocationService::class.java).apply {
+//                action = LocationService.ACTION_START
+//                startService(this)
+//            }
+//        }
+                val clickStart = findViewById<Button>(R.id.start_button)
+//        clickStart.setOnClickListener {
+//                val intent = Intent(this, LocationService::class.java).apply {
+//                action = LocationService.ACTION_START
+//                startService(this)
+//
+//            }
+//        }
 
-        fun clickStop() {
-            Intent(applicationContext, LocationService::class.java).apply {
-                action = LocationService.ACTION_START
-                startService(this)
-            }
-        }
+            val clickStop = findViewById<Button>(R.id.stop_button)
+//            clickStart.setOnClickListener {
+//                    val intent = Intent(this, LocationService::class.java).apply {
+//                    action = LocationService.ACTION_STOP
+//                    startService(this)
+//                }
+//            }
+
+
 
 
     }

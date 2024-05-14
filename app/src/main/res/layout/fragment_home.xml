@@ -127,17 +127,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/start"
+        android:id="@+id/start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start"
-        android:onClick="clickStart"/>
+        android:text="Start"/>
+<!--        android:onClick="clickStart"/>-->
 
     <Button
-        android:id="@+id/stop"
+        android:id="@+id/stop_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="Stop"
-        android:onClick="clickStop"/>
+        android:text="Stop"/>
+<!--        android:onClick="clickStop"/>-->
 </LinearLayout>

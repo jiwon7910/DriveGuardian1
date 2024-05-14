@@ -173,6 +173,10 @@
     <string name="supporting_text">Advance</string>
     <string name="action">Choose</string>
 
+    <!-- Strings for start, stop button -->
+<!--    <string name="start_button">Start</string>-->
+<!--    <string name="stop_button">Stop</string>-->
+
     <string name="new_plan">New Fitness Plan</string>
     <string name="label_exercise_name">Exercise</string>
     <string name="label_time">Time</string>
