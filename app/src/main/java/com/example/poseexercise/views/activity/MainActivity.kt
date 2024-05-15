@@ -135,7 +135,27 @@ class MainActivity : AppCompatActivity() {
 //                startService(this)
 //            }
 //        }
-                val clickStart = findViewById<Button>(R.id.start_button)
+
+        fun clickStart(){
+            val clickStart = findViewById<Button>(R.id.start_button)
+            clickStart.setOnClickListener {
+                val intent = Intent(this, LocationService::class.java).apply {
+                    action = LocationService.ACTION_START
+                    startService(this)
+                }
+            }
+        }
+
+        fun clickStop(){
+            val clickStop = findViewById<Button>(R.id.stop_button)
+            clickStop.setOnClickListener {
+                val intent = Intent(this, LocationService::class.java).apply {
+                    action = LocationService.ACTION_STOP
+                    startService(this)
+                }
+            }
+        }
+//                val clickStart = findViewById<Button>(R.id.start_button)
 //        clickStart.setOnClickListener {
 //                val intent = Intent(this, LocationService::class.java).apply {
 //                action = LocationService.ACTION_START
@@ -144,7 +164,7 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
 
-            val clickStop = findViewById<Button>(R.id.stop_button)
+//            val clickStop = findViewById<Button>(R.id.stop_button)
 //            clickStart.setOnClickListener {
 //                    val intent = Intent(this, LocationService::class.java).apply {
 //                    action = LocationService.ACTION_STOP

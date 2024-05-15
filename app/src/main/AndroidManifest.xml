@@ -84,7 +84,7 @@
                 <data
                     android:scheme="https"
                     android:host="yourdomain.com"
-                    android:path="/oauth_callback" />
+                    android:path="/oauth_callback"/>
             </intent-filter>
         </activity>
 
