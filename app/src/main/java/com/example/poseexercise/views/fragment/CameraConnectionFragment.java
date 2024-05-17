@@ -189,6 +189,8 @@ public class CameraConnectionFragment extends Fragment {
         public void onSurfaceTextureUpdated(final SurfaceTexture texture) {}
       };
 
+
+
   private CameraConnectionFragment(
       final ConnectionCallback connectionCallback,
       final OnImageAvailableListener imageListener,

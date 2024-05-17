@@ -1,3 +1,10 @@
+buildscript {
+    ext {
+//        kotlin_version = "1.4.32"
+        compose_version = '1.5.2' // Compose 라이브러리의 버전 정의
+    }
+}
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -46,10 +53,20 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
+        compose true
     }
     aaptOptions {
         noCompress "tflite"
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+    namespace 'com.example.poseexercise'
 }
 
 dependencies {
@@ -163,4 +180,46 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite:2.4.0'
     implementation 'org.tensorflow:tensorflow-lite-gpu:2.4.0'
 
+    //Google Map
+    implementation("com.google.android.gms:play-services-maps:17.0.0") //문서
+//    implementation("com.google.android.gms:play-services-maps:18.0.1") //구글
+//    implementation("com.google.android.gms:play-services-maps:18.2.0") //가장 최신
+//    implementation 'com.google.android.gms:play-services-location:21.2.0'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+//    implementation 'com.google.android.gms:play-services-location:18.0.0'
+//    implementation "androidx.compose.ui:ui:$compose_version"
+//    implementation "androidx.activity:activity-compose:1.3.0-alpha03"
+//    implementation "androidx.compose.material:material:$compose_version"
+
+    //compose 추가
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    // Compose Material Design
+    implementation 'androidx.compose.material:material:1.1.1'
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.1.1'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.1.1'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
+
+    // When using a MDC theme
+    implementation "com.google.android.material:compose-theme-adapter:1.1.1"
+
+    // When using a AppCompat theme
+    implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
+
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.activity:activity-compose:1.3.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 }
+
+

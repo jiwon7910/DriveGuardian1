@@ -1,16 +1,38 @@
 package com.example.poseexercise.views.activity
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
+import android.widget.Button
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.poseexercise.R
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.poseexercise.backgroundlocationtracking.LocationService
+import com.example.poseexercise.backgroundlocationtracking.ui.theme.BackgroundLocationTrackingTheme
 import com.example.poseexercise.databinding.ActivityMainBinding
 import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
-
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Main Activity and entry point for the app.
@@ -18,6 +40,7 @@ import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +55,10 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         // Instantiate the navController using the NavHostFragment
         navController = navHostFragment.navController
+
+//        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
+//        mapFragment.getMapAsync { googleMap -> addMarkers(googleMap)
+//        }
 
         val menuItems = arrayOf(
             CbnMenuItem(
@@ -60,7 +87,97 @@ class MainActivity : AppCompatActivity() {
         )
         binding.navView.setMenuItems(menuItems, 0)
         binding.navView.setupWithNavController(navController)
+//
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ),
+            0
+        )
+//        setContent {
+//            BackgroundLocationTrackingTheme {
+//                Column(
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    Button(onClick = {
+//                        Intent(applicationContext, LocationService::class.java).apply {
+//                            action = LocationService.ACTION_START
+//                            startService(this)
+//                        }
+//                    }) {
+//                        Text(text = "Start")
+//                    }
+//                    Spacer(modifier = Modifier.height(16.dp))
+//                    Button(onClick = {
+//                        Intent(applicationContext, LocationService::class.java).apply {
+//                            action = LocationService.ACTION_STOP
+//                            startService(this)
+//                        }
+//                    }) {
+//                        Text(text = "Stop")
+//                    }
+//                }
+//            }
+//        }
+
+//        fun clickStart() {
+//            Intent(applicationContext, LocationService::class.java).apply {
+//                action = LocationService.ACTION_START
+//                startService(this)
+//            }
+//        }
+//
+//        fun clickStop() {
+//            Intent(applicationContext, LocationService::class.java).apply {
+//                action = LocationService.ACTION_START
+//                startService(this)
+//            }
+//        }
+
+        fun clickStart(){
+            val clickStart = findViewById<Button>(R.id.start_button)
+            clickStart.setOnClickListener {
+                val intent = Intent(this, LocationService::class.java).apply {
+                    action = LocationService.ACTION_START
+                    startService(this)
+                }
+            }
+        }
+
+        fun clickStop(){
+            val clickStop = findViewById<Button>(R.id.stop_button)
+            clickStop.setOnClickListener {
+                val intent = Intent(this, LocationService::class.java).apply {
+                    action = LocationService.ACTION_STOP
+                    startService(this)
+                }
+            }
+        }
+//                val clickStart = findViewById<Button>(R.id.start_button)
+//        clickStart.setOnClickListener {
+//                val intent = Intent(this, LocationService::class.java).apply {
+//                action = LocationService.ACTION_START
+//                startService(this)
+//
+//            }
+//        }
+
+//            val clickStop = findViewById<Button>(R.id.stop_button)
+//            clickStart.setOnClickListener {
+//                    val intent = Intent(this, LocationService::class.java).apply {
+//                    action = LocationService.ACTION_STOP
+//                    startService(this)
+//                }
+//            }
+
+
+
+
     }
+
+
 
     /**
      * Enables back button support. Simply navigates one element up on the stack.
@@ -68,6 +185,8 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+    
+
 
     companion object {
         @kotlin.jvm.JvmField
@@ -89,3 +208,4 @@ class MainActivity : AppCompatActivity() {
         )
     }
 }
+

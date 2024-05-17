@@ -110,10 +110,10 @@ class ProfileFragment : Fragment(), MemoryManagement {
         // Update progress views (ProgressBar and TextView)
         val cappedProgress = min(progressPercentage, 110.0)
 
-        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
+//        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
         val progressTextView = view?.findViewById<TextView>(R.id.percentage)
 
-        progressBar?.progress = cappedProgress.toInt()
+//        progressBar?.progress = cappedProgress.toInt()
         progressTextView?.text = String.format("%.2f%%", cappedProgress)
     }
 
@@ -192,16 +192,16 @@ class ProfileFragment : Fragment(), MemoryManagement {
         val totalCalories = workoutResults?.sumOf { it.calorie } ?: 0.0
 
         // Update the total calories TextView
-        val totalCaloriesTextView = view?.findViewById<TextView>(R.id.totalCaloriesTextView)
+//        val totalCaloriesTextView = view?.findViewById<TextView>(R.id.totalCaloriesTextView)
 
         val formattedTotalCalories = String.format(Locale.getDefault(), "%.2f", totalCalories)
 
-        totalCaloriesTextView?.text =
-            String.format(
-                Locale.getDefault(),
-                getString(R.string.total_calories),
-                formattedTotalCalories
-            )
+//        totalCaloriesTextView?.text =
+//            String.format(
+//                Locale.getDefault(),
+//                getString(R.string.total_calories),
+//                formattedTotalCalories
+//            )
 
         // Map entries for BarChart
         val entries = totalCaloriesPerWeek.entries.mapIndexed { index, entry ->
