@@ -93,7 +93,7 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
     private FrameMetadata processingMetaData;
 
     protected VisionProcessorBase(Context context) {
-        activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE); // 시스템 리소스 관리
         executor = new ScopedExecutor(TaskExecutors.MAIN_THREAD);
         fpsTimer.scheduleAtFixedRate(
                 new TimerTask() {
@@ -117,6 +117,7 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
             return;
         }
 
+        // 설정에 따라 이미지를 Bitmap 또는 MlImage로 처리
         Bitmap bitmap = null;
         if (!PreferenceUtils.isCameraLiveViewportEnabled(graphicOverlay.getContext())) {
             bitmap = BitmapUtils.getBitmap(image);
@@ -127,7 +128,7 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
                     new MediaMlImageBuilder(image.getImage())
                             .setRotation(image.getImageInfo().getRotationDegrees())
                             .build();
-
+            // 이미지 추가 처리
             requestDetectInImage(
                     mlImage,
                     graphicOverlay,
@@ -183,7 +184,7 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
             boolean shouldShowFps,
             long frameStartMs) {
         final long detectorStartMs = SystemClock.elapsedRealtime();
-        return task.addOnSuccessListener(
+        return task.addOnSuccessListener( // 성공 시, 프레임 처리 시간과 감지기 지연 시간을 기록하고, 시스템 메모리 사용량을 로그에 기록하며, graphicOverlay를 업데이트하여 처리된 결과를 화면에 표시합니다.
                         executor,
                         results -> {
                             long endMs = SystemClock.elapsedRealtime();
@@ -259,7 +260,8 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
         fpsTimer.cancel();
     }
 
-    private void resetLatencyStats() {
+    private void resetLatencyStats() { // 지연 시간 통계를 초기화
+        // 실행 횟수, 총 프레임 시간, 최대 및 최소 프레임 시간, 총 감지기 시간, 최대 및 최소 감지기 시간을 초기값으로 재설정
         numRuns = 0;
         totalFrameMs = 0;
         maxFrameMs = 0;

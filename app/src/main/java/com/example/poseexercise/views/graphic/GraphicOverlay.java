@@ -105,6 +105,10 @@ public class GraphicOverlay extends View {
             return imagePixel * overlay.scaleFactor;
         }
 
+        public void postInvalidate() {
+            overlay.postInvalidate();
+        }
+
         /**
          * Adjusts the x coordinate from the image's coordinate system to the view coordinate system.
          */

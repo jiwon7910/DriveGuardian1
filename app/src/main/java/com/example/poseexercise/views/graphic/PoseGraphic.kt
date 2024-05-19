@@ -77,6 +77,7 @@ internal constructor(
         val rightEar = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR)
         val leftMouth = pose.getPoseLandmark(PoseLandmark.LEFT_MOUTH)
         val rightMouth = pose.getPoseLandmark(PoseLandmark.RIGHT_MOUTH)
+
         // Face
         drawLine(canvas, nose, leftEyeInner, whitePaint)
         drawLine(canvas, leftEyeInner, leftEye, whitePaint)

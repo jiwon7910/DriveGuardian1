@@ -16,15 +16,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.OptIn
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraInfoUnavailableException
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProcessor
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -69,9 +71,21 @@ import com.example.poseexercise.viewmodels.ResultViewModel
 import com.example.poseexercise.views.activity.DetectorActivity
 import com.example.poseexercise.views.activity.MainActivity
 import com.example.poseexercise.views.fragment.preference.PreferenceUtils
+import com.example.poseexercise.views.graphic.FaceContourGraphic
 import com.example.poseexercise.views.graphic.GraphicOverlay
+import com.google.android.gms.tasks.Tasks
+import com.google.android.gms.vision.face.Landmark
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.mlkit.common.MlKitException
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.face.Face
+import com.google.mlkit.vision.face.FaceDetection
+import com.google.mlkit.vision.face.FaceDetectorOptions
+import com.google.mlkit.vision.pose.Pose
+import com.google.mlkit.vision.pose.PoseDetection
+import com.google.mlkit.vision.pose.PoseDetector
+import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
+import java.util.concurrent.Executors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -99,6 +113,7 @@ class DetectFragment : Fragment(), MemoryManagement {
     private var today: String = DateFormat.format("EEEE", Date()) as String
     private var runOnce: Boolean = false
     private var isAllWorkoutFinished: Boolean = false
+
     private var mRecTimer: Timer? = null
     private var mRecSeconds = 0
     private var mRecMinute = 0
@@ -134,7 +149,7 @@ class DetectFragment : Fragment(), MemoryManagement {
     private lateinit var confidenceTextView: TextView
     private lateinit var cameraViewModel: CameraXViewModel
     private lateinit var loadingTV: TextView
-    private lateinit var loadProgress: ProgressBar
+    // private lateinit var loadProgress: ProgressBar
     private lateinit var completeAllExercise: TextView
     // private lateinit var skipButton: Button
     private lateinit var textToSpeech: TextToSpeech
@@ -147,6 +162,7 @@ class DetectFragment : Fragment(), MemoryManagement {
         }
         initTextToSpeech()
         cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+        //CameraXViewModel을 생성하여 cameraViewModel 변수에 할당합니다. ViewModelProvider를 통해 ViewModel을 제공받습니다.
         cameraViewModel = ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory
                 .getInstance(requireActivity().application)
@@ -164,24 +180,32 @@ class DetectFragment : Fragment(), MemoryManagement {
         // Linking all button and controls
         cameraFlipFAB = view.findViewById(R.id.facing_switch)
         startButton = view.findViewById(R.id.button_start_exercise)
+
         yawnButton = view.findViewById(R.id.button_start_yawn)
+
         buttonCompleteExercise = view.findViewById(R.id.button_complete_exercise)
         // buttonCancelExercise = view.findViewById(R.id.button_cancel_exercise)
         timerTextView = view.findViewById(R.id.timerTV)
         timerRecordIcon = view.findViewById(R.id.timerRecIcon)
-        confIndicatorView = view.findViewById(R.id.confidenceIndicatorView)
+
+
         currentExerciseTextView = view.findViewById(R.id.currentExerciseText)
         currentRepetitionTextView = view.findViewById(R.id.currentRepetitionText)
+
+        confIndicatorView = view.findViewById(R.id.confidenceIndicatorView)
         confidenceTextView = view.findViewById(R.id.confidenceIndicatorTextView)
-        completeAllExercise = view.findViewById(R.id.completedAllExerciseTextView)
         confIndicatorView.visibility = View.INVISIBLE
         confidenceTextView.visibility = View.INVISIBLE
-        loadingTV = view.findViewById(R.id.loadingStatus)
-        loadProgress = view.findViewById(R.id.loadingProgress)
+
+        completeAllExercise = view.findViewById(R.id.completedAllExerciseTextView)
+
+
+        //loadingTV = view.findViewById(R.id.loadingStatus)
+        //loadProgress = view.findViewById(R.id.loadingProgress)
         // skipButton = view.findViewById(R.id.skipButton)
-        workoutRecyclerView = view.findViewById(R.id.workoutRecycleViewArea)
+        // workoutRecyclerView = view.findViewById(R.id.workoutRecycleViewArea)
         workoutRecyclerView.layoutManager = LinearLayoutManager(activity)
-        yogaPoseImage = view.findViewById(R.id.yogaPoseSnapShot)
+        //yogaPoseImage = view.findViewById(R.id.yogaPoseSnapShot)
         return view
     }
 
@@ -191,6 +215,7 @@ class DetectFragment : Fragment(), MemoryManagement {
         previewView = view.findViewById(R.id.preview_view)
         // val gifContainer: FrameLayout = view.findViewById(R.id.gifContainer)
         graphicOverlay = view.findViewById(R.id.graphic_overlay)
+
         cameraFlipFAB.visibility = View.VISIBLE
         startButton.visibility = View.VISIBLE
         yawnButton.visibility = View.VISIBLE
@@ -201,20 +226,22 @@ class DetectFragment : Fragment(), MemoryManagement {
         // start exercise button
         startButton.setOnClickListener {
             // showing loading AI pose detection Model information to user
-            loadingTV.visibility = View.GONE
-            loadProgress.visibility = View.GONE
+            // loadingTV.visibility = View.GONE
+            // loadProgress.visibility = View.GONE
             // Set the screenOn flag to true, preventing the screen from turning off
             screenOn = true
             // Add the FLAG_KEEP_SCREEN_ON flag to the activity's window, keeping the screen on
+            // 화면이 꺼지지 않도록 FLAG_KEEP_SCREEN_ON 플래그를 설정
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
             cameraFlipFAB.visibility = View.GONE
             // gifContainer.visibility = View.VISIBLE
             // buttonCancelExercise.visibility = View.VISIBLE
             buttonCompleteExercise.visibility = View.VISIBLE
             startButton.visibility = View.GONE
-            // To disable screen timeout
+            //To disable screen timeout
             //window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            cameraViewModel.triggerClassification.value = true
+            //cameraViewModel.triggerClassification.value = true
         }
 
         // 현재 액티비티(MainActivity)에서 DetectorActivity로의 새로운 인텐트를 생성 및 시작
@@ -249,6 +276,7 @@ class DetectFragment : Fragment(), MemoryManagement {
 
         // 10 reps =  3.2 for push up -> 1 reps = 3.2/10
         // Complete the exercise
+        /*
         val sitUp = Postures.situp
         val pushUp = Postures.pushup
         val lunge = Postures.lunge
@@ -256,9 +284,11 @@ class DetectFragment : Fragment(), MemoryManagement {
         val chestPress = Postures.chestpress
         val deadLift = Postures.deadlift
         val shoulderPress = Postures.shoulderpress
+         */
 
         buttonCompleteExercise.setOnClickListener {
-            synthesizeSpeech("Workout Complete")
+            synthesizeSpeech("Safe Driving Complete")
+            /*
             cameraViewModel.postureLiveData.value?.let {
                 //val builder = StringBuilder()
                 for ((_, value) in it) {
@@ -292,8 +322,12 @@ class DetectFragment : Fragment(), MemoryManagement {
                 }
             }
 
+             */
+
             // update the workoutTimer in MainActivity
+            // 타이머 텍스트뷰에서 현재 운동 시간을 가져와 문자열로 변환합니다.
             val currentTimer = timerTextView.text.toString()
+            // MainActivity 클래스의 workoutTimer 속성을 현재 타이머 값으로 업데이트 -> detection 사용 시간 저장
             MainActivity.workoutTimer = currentTimer
 
             stopMediaTimer()
@@ -305,10 +339,11 @@ class DetectFragment : Fragment(), MemoryManagement {
             activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
             // update the workoutResultData in MainActivity
+            /*
             cameraViewModel.postureLiveData.value?.let {
                 val builder = StringBuilder()
                 for ((key, value) in it) {
-                    if (value.repetition != 0 && key in onlyExercise) {
+                    if (value.repetition != 0 && key in onlyExercise) { // 운동 반복 횟수 저장
                         builder.append("${exerciseNameToDisplay(value.postureType)}: ${value.repetition}\n")
                     } else if (key in onlyPose) {
                         builder.append("${exerciseNameToDisplay(value.postureType)}\n")
@@ -317,6 +352,7 @@ class DetectFragment : Fragment(), MemoryManagement {
                 if (builder.toString().isNotEmpty()) MainActivity.workoutResultData =
                     builder.toString()
             }
+             */
 
             // stop triggering classification process
             cameraViewModel.triggerClassification.value = false
@@ -325,7 +361,7 @@ class DetectFragment : Fragment(), MemoryManagement {
             Navigation.findNavController(view)
                 .navigate(R.id.action_workoutFragment_to_completedFragment)
         }
-
+/*
         cameraViewModel.processCameraProvider.observe(viewLifecycleOwner) { provider: ProcessCameraProvider? ->
             cameraProvider = provider
             //bindAllCameraUseCases()
@@ -334,9 +370,12 @@ class DetectFragment : Fragment(), MemoryManagement {
             )
         }
 
+ */
+
         cameraFlipFAB.setOnClickListener {
             toggleCameraLens()
         }
+
         // initialize the list of plan exercise to be filled from database
         val databaseExercisePlan = mutableListOf<ExercisePlan>()
         // Initialize Exercise Log
@@ -374,7 +413,8 @@ class DetectFragment : Fragment(), MemoryManagement {
             addExerciseIfNotPresent(exerciseNameToDisplay(WARRIOR_CLASS))
             addExerciseIfNotPresent(exerciseNameToDisplay(YOGA_TREE_CLASS))
 
-            val viewPager: ViewPager2 = view.findViewById(R.id.exerciseViewPager)
+
+            //val viewPager: ViewPager2 = view.findViewById(R.id.exerciseViewPager)
             /*
             val exerciseGifAdapter = ExerciseGifAdapter(exerciseGifs) {
                 // Handle skip button click here
@@ -390,14 +430,16 @@ class DetectFragment : Fragment(), MemoryManagement {
 
              */
 
-            notCompletedExercise?.forEach { item ->
-                val exercisePlan =
+            // 데이터베이스에서 가져온 미완료 운동 계획들을 처리하여, 이미 존재하는 계획은 반복 횟수를 업데이트하고, 새로운 계획은 리스트에 추가합니다.
+            // 그리고 이를 운동 로그에 기록합니다.
+            notCompletedExercise?.forEach { item -> //  item ->: notCompletedExercise 리스트의 각 요소에 대해 반복
+                val exercisePlan = // 새로운 운동 계획(ExercisePlan) 객체를 생성
                     ExercisePlan(
                         item.id,
                         databaseNameToClassification(item.exercise),
                         item.repeatCount
                     )
-                val existingExercisePlan =
+                val existingExercisePlan = // 새로운 운동 계획을 databaseExercisePlan 리스트에서 찾는다. 이 리스트는 이미 저장된 운동 계획들을 포함함.
                     databaseExercisePlan.find {
                         it.planId == item.id
                     }
@@ -425,12 +467,16 @@ class DetectFragment : Fragment(), MemoryManagement {
         var previousKey: String? = null
         var previousConfidence: Float? = null
 
+        //postureLiveData의 변경 사항을 관찰합니다. 변경 사항이 감지되면 람다 함수가 실행됩니다.
         cameraViewModel.postureLiveData.observe(viewLifecycleOwner) { mapResult ->
-            for ((key, value) in mapResult) {
+            for ((key, value) in mapResult) { // mapResult의 각 요소를 반복하며, 키포인트 및 해당 값을 추출
                 // Visualize the repetition exercise data
+                // 키포인트가 자세 클래스에 속하는지 확인합니다.
                 if (key in POSE_CLASSES.toList()) {
                     // get the data from exercise log of specific exercise
+                    // 특정 운동에 대한 운동 데이터를 운동 로그에서 가져옵니다.
                     val data = exerciseLog.getExerciseData(key)
+                    // 운동 로그에 해당 운동에 대한 데이터가 없는 경우, 처음으로 운동을 추가
                     if (key in onlyExercise && data == null) {
                         // Adding exercise for the first time
                         exerciseLog.addExercise(
@@ -440,26 +486,33 @@ class DetectFragment : Fragment(), MemoryManagement {
                             value.confidence,
                             false
                         )
+                        //운동 로그에 해당 운동에 대한 데이터가 있고, 반복 횟수가 이전보다 1 증가한 경우, 운동을 추가
                     } else if (key in onlyExercise && value.repetition == data?.repetitions?.plus(1)) {
+                        // 운동 RecyclerView를 보이도록 설정
                         workoutRecyclerView.visibility = View.VISIBLE
+                        // 모든 운동이 완료된 경우, 모든 운동 완료 메시지를 표시하거나 숨깁니다.
                         if (isAllWorkoutFinished) {
                             completeAllExercise.visibility = View.VISIBLE
                         } else {
                             completeAllExercise.visibility = View.GONE
                         }
+                        //자세 표시 및 신뢰도 텍스트를 숨깁니다.
                         confIndicatorView.visibility = View.INVISIBLE
                         confidenceTextView.visibility = View.INVISIBLE
                         yogaPoseImage.visibility = View.INVISIBLE
                         // check if the exercise target is complete
+                        //운동 계획에서 해당 운동의 반복 횟수를 가져옵니다.
                         var repetition: Int? = databaseExercisePlan.find {
                             it.exerciseName.equals(
                                 key,
                                 ignoreCase = true
                             )
                         }?.repetitions
+
                         if (repetition == null || repetition == 0) {
                             repetition = HighCount
                         }
+                        //운동이 아직 완료되지 않았고, 목표 반복 횟수를 달성한 경우, 운동을 완료 처리하고 사용자에게 완료 메시지를 전달합니다.
                         if (!data.isComplete && (value.repetition >= repetition)) {
                             // Adding data only when the increment happen
                             exerciseLog.addExercise(
@@ -513,13 +566,18 @@ class DetectFragment : Fragment(), MemoryManagement {
                             )
                         }
                         // display Current result when the increment happen
+                        // 운동 결과를 표시하는 함수를 호출
                         displayResult(key, exerciseLog)
 
 
                         // update the display list of all exercise progress when the increment happen
+                        // 운동 로그에서 모든 운동 데이터를 가져옵니다.
                         val exerciseList = exerciseLog.getExerciseDataList()
+                        // 운동 데이터를 사용하여 RecyclerView에 표시할 어댑터를 초기화
                         workoutAdapter = WorkoutAdapter(exerciseList, databaseExercisePlan)
+                        // RecyclerView에 어댑터를 설정하여 운동 데이터를 표시합니다.
                         workoutRecyclerView.adapter = workoutAdapter
+                        // 자세 클래스에 속하고, 신뢰도가 0.5보다 큰 경우를 확인합니다.
                     } else if (key in onlyPose && value.confidence > 0.5) {
 
                         if (key !== previousKey || value.confidence !== previousConfidence) {
@@ -538,7 +596,7 @@ class DetectFragment : Fragment(), MemoryManagement {
                             yogaPoseImage.visibility = View.VISIBLE
 
                             if (key !== previousKey) {
-                                yogaPoseImage.setImageResource(getDrawableResourceIdYoga(key))
+                                // yogaPoseImage.setImageResource(getDrawableResourceIdYoga(key))
                             }
 
                             // Update previous values
@@ -555,17 +613,18 @@ class DetectFragment : Fragment(), MemoryManagement {
 
             // Visualize list of all exercise result for the first time, to show the target exercise
             if (!runOnce) {
-                val exerciseList = exerciseLog.getExerciseDataList()
-                workoutAdapter = WorkoutAdapter(exerciseList, databaseExercisePlan)
-                workoutRecyclerView.adapter = workoutAdapter
+                // val exerciseList = exerciseLog.getExerciseDataList()
+                // workoutAdapter = WorkoutAdapter(exerciseList, databaseExercisePlan)
+                // workoutRecyclerView.adapter = workoutAdapter
                 runOnce = true
-                loadingTV.visibility = View.GONE
-                loadProgress.visibility = View.GONE
-                synthesizeSpeech("ready to start")
+                // loadingTV.visibility = View.GONE
+                // loadProgress.visibility = View.GONE
+                synthesizeSpeech("start driving")
                 startMediaTimer()
                 timerTextView.visibility = View.VISIBLE
                 timerRecordIcon.visibility = View.VISIBLE
             }
+
         }
     }
 
@@ -591,7 +650,7 @@ class DetectFragment : Fragment(), MemoryManagement {
 
     /**
      * List of yoga images
-     */
+
     private val yogaPoseImages = mapOf(
         WARRIOR_CLASS to R.drawable.warrior_yoga_pose,
         YOGA_TREE_CLASS to R.drawable.tree_yoga_pose
@@ -601,6 +660,7 @@ class DetectFragment : Fragment(), MemoryManagement {
         return yogaPoseImages[yogaPoseKey]
             ?: throw IllegalArgumentException("Invalid yoga pose key: $yogaPoseKey")
     }
+     */
 
     /**
      * Initialize TextToSpeech engine
@@ -695,6 +755,7 @@ class DetectFragment : Fragment(), MemoryManagement {
         previewUseCase!!.setSurfaceProvider(previewView!!.surfaceProvider)
         camera = cameraProvider!!.bindToLifecycle(this, cameraSelector!!, previewUseCase)
     }
+
 
     /**
      * bind analysis use case
@@ -808,7 +869,6 @@ class DetectFragment : Fragment(), MemoryManagement {
         }
         return true
     }
-
     /**
      * Check if a specific permission is granted
      */
@@ -1043,6 +1103,7 @@ class DetectFragment : Fragment(), MemoryManagement {
      * Typed constant class for exercise postures
      */
     class TypedConstant(val type: String, val value: Double)
+    /*
     object Postures {
         val pushup = TypedConstant(PUSHUPS_CLASS, 3.2)
         val lunge = TypedConstant(LUNGES_CLASS, 3.0)
@@ -1052,4 +1113,6 @@ class DetectFragment : Fragment(), MemoryManagement {
         val deadlift = TypedConstant(DEAD_LIFT_CLASS, 10.0)
         val shoulderpress = TypedConstant(SHOULDER_PRESS_CLASS, 9.0)
     }
+
+     */
 }

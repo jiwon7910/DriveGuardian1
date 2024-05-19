@@ -152,19 +152,6 @@
             app:pressedTranslationZ="6dp"
             app:tint="@color/white" />
 
-        <!-- RecyclerView for Workout Exercise List -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/workoutRecycleViewArea"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/exerciselist_background"
-            android:paddingHorizontal="15dp"
-            android:layout_marginEnd="20dp"
-            android:paddingVertical="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/facing_switch"
-            app:layout_constraintEnd_toEndOf="@+id/preview_view"
-            app:layout_constraintTop_toBottomOf="@+id/currentRepetitionText" />
-
         <!-- Camera Facing Switch Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/facing_switch"
@@ -248,92 +235,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.05" />
 
-
-        <!-- Yoga Pose -->
-        <ImageView
-            android:id="@+id/yogaPoseSnapShot"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_margin="10dp"
-            android:contentDescription="@string/confidence_indicator"
-            android:src="@drawable/warrior_yoga_pose"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.98"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.02" />
-
-
-        <!-- Loading Status TextView -->
-        <TextView
-            android:id="@+id/loadingStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/exerciselist_background"
-            android:paddingHorizontal="50dp"
-            android:paddingVertical="100dp"
-            android:text="@string/loading"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/button_start_exercise"
-            app:layout_constraintEnd_toEndOf="@+id/preview_view"
-            app:layout_constraintStart_toStartOf="@+id/preview_view"
-            app:layout_constraintTop_toBottomOf="@+id/timerTV" />
-
-
-        <!-- Loading Progress Bar -->
-        <ProgressBar
-            android:id="@+id/loadingProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/primaryColor"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/loadingStatus"
-            app:layout_constraintTop_toBottomOf="@+id/loadingStatus" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="20dp" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- FrameLayout for black background behind ViewPager -->
-    <FrameLayout
-        android:id="@+id/gifContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black"
-        android:visibility="gone">
-
-        <!-- ViewPager for GIFs -->
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/exerciseViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-        <!-- GifImageView for displaying exercise GIFs -->
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/exerciseGifImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"/>
-
-        <!-- Skip button -->
-        <Button
-            android:id="@+id/skipButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible" />
-
-    </FrameLayout>
-
 
 </FrameLayout>
