@@ -115,6 +115,11 @@ class ProfileFragment : Fragment(), MemoryManagement {
 
         progressBar?.progress = cappedProgress.toInt()
         // progressTextView?.text = String.format("%.2f%%", cappedProgress)
+//        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
+        val progressTextView = view?.findViewById<TextView>(R.id.percentage)
+
+//        progressBar?.progress = cappedProgress.toInt()
+        progressTextView?.text = String.format("%.2f%%", cappedProgress)
     }
 
     // Function to get the current calendar week

@@ -11,10 +11,14 @@
     <string name="next_onboarding">Next</string>
     <string name="get_started">Get Started</string>
 
+    <!-- Strings for login page -->
+    <string name="oauth_callback_url">https://yourdomain.com/oauth_callback</string>
+
+
     <!-- Strings for home-screen -->
     <string name="mixed_text">20 <font fgcolor="#A9A9A9">x 3</font></string>
     <string name="there_is_no_plan_set_at_the_moment">There is no plan set at the moment</string>
-    <string name="exercise_left">%d exercise left</string>
+<!--    <string name="exercise_left">%d exercise left</string>-->
 
     <string name="app_name" translatable="false">DriveGuardian</string>
 
@@ -135,10 +139,10 @@
     <string name="complete_button">Complete</string>
     <string name="timer">%s</string>
     <string name="exercise_count">%1$s: %2$d</string>
-    <string name="hello">Hello!</string>
+<!--    <string name="hello">Hello!</string>-->
     <string name="name">RepDetect User</string>
-    <string name="driving">Driving</string>
-    <string name="exercises_left">12 exercises left</string>
+    <string name="driving">   Driving</string>
+    <string name="exercises_left"></string>
     <string name="progress_image">Progress Image</string>
     <string name="recent_activity">Recent Activity</string>
     <string name="colorful_rectangle">Progress Image</string>
@@ -168,6 +172,10 @@
     <string name="text_example">450 kCal</string>
     <string name="supporting_text">Advance</string>
     <string name="action">Choose</string>
+
+    <!-- Strings for start, stop button -->
+<!--    <string name="start_button">Start</string>-->
+<!--    <string name="stop_button">Stop</string>-->
 
     <string name="new_plan">New Fitness Plan</string>
     <string name="label_exercise_name">Exercise</string>
@@ -203,6 +211,12 @@
     <string name="for_all_drivers">Monitoring for all drivers</string>
     <string name="reps">Reps</string>
     <string name="completedAll">Congratulation!\nYou have completed all the planned exercise for today.</string>
+
+    <!-- for map-->
+
+    <string name="mapname">MyGoogleMaps</string>
+    <string name="my_map_api_key">AIzaSyDHaZVpVHtI8NT08al--ctZVPdT4Gr7lPg</string>
+
 
     <!--  from tflite app  -->
     <string name="tfe_od_app_name" translation_description="Object Detection demo app [CHAR_LIMIT=40]">TFL Detect</string>

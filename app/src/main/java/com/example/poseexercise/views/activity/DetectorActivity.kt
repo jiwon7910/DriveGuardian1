@@ -1,16 +1,13 @@
 package com.example.poseexercise.views.activity
 
+import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Bitmap.Config
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
-import android.graphics.Paint.Style
-import android.graphics.RectF
 import android.graphics.Typeface
 import android.media.ImageReader
-import android.media.ImageReader.OnImageAvailableListener
 import android.os.SystemClock
 import android.util.Log
 import android.util.Size
@@ -18,10 +15,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import com.example.poseexercise.R
-import java.io.IOException
-import java.util.LinkedList
 import com.example.poseexercise.customview.OverlayView
-import com.example.poseexercise.customview.OverlayView.DrawCallback
 import com.example.poseexercise.env.BorderedText
 import com.example.poseexercise.env.ImageUtils
 import com.example.poseexercise.env.Logger
@@ -29,6 +23,8 @@ import com.example.poseexercise.tflite.Classifier
 import com.example.poseexercise.tflite.DetectorFactory
 import com.example.poseexercise.tflite.YoloV5Classifier
 import com.example.poseexercise.tracking.MultiBoxTracker
+import java.io.IOException
+import java.util.LinkedList
 
 
 public class DetectorActivity : CameraActivity(), ImageReader.OnImageAvailableListener {
@@ -49,6 +45,27 @@ public class DetectorActivity : CameraActivity(), ImageReader.OnImageAvailableLi
     private var tracker: MultiBoxTracker? = null
     private var borderedText: BorderedText? = null
     private var modelIndex: Int? = null
+
+    var backPressedTime : Long = 0
+
+    override fun onBackPressed() {
+        //2.5초이내에 한 번 더 뒤로가기 클릭 시
+        if (System.currentTimeMillis() - backPressedTime < 2500) {
+            super.onBackPressed()
+            // stopPlay() //이 액티비티에서 종료되어야 하는 활동 종료시켜주는 함수
+            val intent = Intent(
+                this@DetectorActivity,
+                MainActivity::class.java
+            ) //지금 액티비티에서 다른 액티비티로 이동하는 인텐트 설정
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP //인텐트 플래그 설정
+            startActivity(intent) //인텐트 이동
+            finish() //현재 액티비티 종료
+
+            return
+        }
+        Toast.makeText(this, "한번 더 클릭 시 홈으로 이동됩니다.", Toast.LENGTH_SHORT).show()
+        backPressedTime = System.currentTimeMillis()
+    }
     public override fun onPreviewSizeChosen(size: Size?, rotation: Int) {
         val textSizePx = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DIP, resources.displayMetrics
