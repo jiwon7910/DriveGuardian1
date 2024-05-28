@@ -47,10 +47,10 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
     private var planList: List<Plan>? = emptyList()
     private var notCompletePlanList: MutableList<Plan>? = Collections.emptyList()
     // private var today: String = DateFormat.format("EEEE", Date()) as String
-    private lateinit var progressText: TextView
+    // private lateinit var progressText: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var noPlanTV: TextView
-    private lateinit var progressBar: ProgressBar
+    // private lateinit var progressBar: ProgressBar
     private lateinit var progressPercentage: TextView
     private var workoutResults: List<WorkoutResult>? = null
     private lateinit var appRepository: AppRepository
@@ -68,15 +68,15 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Initialize RecyclerView and its adapter for recent activity
-//        progressText = view.findViewById(R.id.exercise_left)
+        // progressText = view.findViewById(R.id.exercise_left)
         // recyclerView = view.findViewById(R.id.today_plans)
         // recentActivityRecyclerView = view.findViewById(R.id.recentActivityRecyclerView)
         // recentActivityAdapter = RecentActivityAdapter(emptyList())
         // recentActivityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         // recentActivityRecyclerView.adapter = recentActivityAdapter
         // noPlanTV = view.findViewById(R.id.no_plan)
-//        progressBar = view.findViewById(R.id.progress_bar)
-//        progressPercentage = view.findViewById(R.id.progress_text)
+        // progressBar = view.findViewById(R.id.progress_bar)
+        // progressPercentage = view.findViewById(R.id.progress_text)
         appRepository = AppRepository(requireActivity().application)
         // Initialize ViewModel
         resultViewModel = ResultViewModel(MyApplication.getInstance())
@@ -189,7 +189,7 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
              */
         }
     }
-
+/*
     // Function to update progress views (ProgressBar and TextView)
     private fun updateProgressViews(progress: Int) {
         // Check if progressPercentage is greater than 0
@@ -204,6 +204,8 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
             progressText.visibility = View.GONE
         }
     }
+
+ */
 
     // Return true if the timestamp is today's date
     private fun isToday(s: Long, locale: Locale = Locale.getDefault()): Boolean {

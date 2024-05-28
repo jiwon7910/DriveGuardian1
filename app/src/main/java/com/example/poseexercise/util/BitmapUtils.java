@@ -42,17 +42,17 @@ public class BitmapUtils {
      * Converts NV21 format byte buffer to bitmap.
      */
     @Nullable
-    public static Bitmap getBitmap(ByteBuffer data, FrameMetadata metadata) {
+    public static Bitmap getBitmap(ByteBuffer data, FrameMetadata metadata) { //  NV21 형식의 바이트 버퍼를 비트맵으로 변환
         data.rewind();
         byte[] imageInBuffer = new byte[data.limit()];
         data.get(imageInBuffer, 0, imageInBuffer.length);
-        try {
+        try { // 데이터를 바이트 배열로 읽어들이고 YuvImage 객체를 생성하여 이를 JPEG 형식으로 압축합니다.
             YuvImage image =
                     new YuvImage(
                             imageInBuffer, ImageFormat.NV21, metadata.getWidth(), metadata.getHeight(), null);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             image.compressToJpeg(new Rect(0, 0, metadata.getWidth(), metadata.getHeight()), 80, stream);
-
+            // 압축된 이미지를 비트맵으로 디코딩하고, 주어진 회전 각도에 따라 이미지를 회전시킵니다. 마지막으로 회전된 비트맵을 반환합니다.
             Bitmap bmp = BitmapFactory.decodeByteArray(stream.toByteArray(), 0, stream.size());
 
             stream.close();
@@ -69,13 +69,14 @@ public class BitmapUtils {
     @Nullable
     @ExperimentalGetImage
     public static Bitmap getBitmap(ImageProxy image) {
-        FrameMetadata frameMetadata =
+        //CameraX API로부터 전달받은 YUV_420_888 형식의 이미지를 비트맵으로 변환
+        FrameMetadata frameMetadata = //  FrameMetadata 객체를 생성하여 이미지의 너비, 높이, 회전 각도를 설정
                 new FrameMetadata.Builder()
                         .setWidth(image.getWidth())
                         .setHeight(image.getHeight())
                         .setRotation(image.getImageInfo().getRotationDegrees())
                         .build();
-
+        //  yuv420ThreePlanesToNV21 함수를 호출하여 YUV_420_888 이미지를 NV21 바이트 버퍼로 변환하고, 변환된 버퍼를 이용해 비트맵을 생성
         ByteBuffer nv21Buffer =
                 yuv420ThreePlanesToNV21(image.getImage().getPlanes(), image.getWidth(), image.getHeight());
         return getBitmap(nv21Buffer, frameMetadata);
@@ -85,6 +86,7 @@ public class BitmapUtils {
      * Rotates a bitmap if it is converted from a bytebuffer.
      */
     private static Bitmap rotateBitmap(
+            // 주어진 비트맵을 지정된 회전 각도와 좌우 또는 상하 반전 여부에 따라 회전시킵니다.
             Bitmap bitmap, int rotationDegrees, boolean flipX, boolean flipY) {
         Matrix matrix = new Matrix();
 
@@ -121,6 +123,7 @@ public class BitmapUtils {
      * them to the NV21 array.
      */
     private static ByteBuffer yuv420ThreePlanesToNV21(
+            // YUV_420_888 형식의 세 개의 플레인 데이터를 NV21 형식의 바이트 버퍼로 변환합니다.
             Plane[] yuv420888planes, int width, int height) {
         int imageSize = width * height;
         byte[] out = new byte[imageSize + 2 * (imageSize / 4)];
@@ -152,6 +155,7 @@ public class BitmapUtils {
      * Checks if the UV plane buffers of a YUV_420_888 image are in the NV21 format.
      */
     private static boolean areUVPlanesNV21(Plane[] planes, int width, int height) {
+        // YUV_420_888 형식의 UV 플레인 버퍼가 NV21 형식인지 확인합니다.
         int imageSize = width * height;
 
         ByteBuffer uBuffer = planes[1].getBuffer();
@@ -184,6 +188,8 @@ public class BitmapUtils {
      * spaced by 'pixelStride'. Note that there is no row padding on the output.
      */
     private static void unpackPlane(
+            // 이미지 플레인 데이터를 바이트 배열로 언패킹합니다.
+            //주어진 플레인의 데이터를 바이트 배열 out에 복사하며, 각 픽셀은 pixelStride 간격으로 배치됩니다.
             Plane plane, int width, int height, byte[] out, int offset, int pixelStride) {
         ByteBuffer buffer = plane.getBuffer();
         buffer.rewind();

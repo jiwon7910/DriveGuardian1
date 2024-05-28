@@ -47,21 +47,10 @@
 
         <!-- Workout Progress TextView -->
 
-        <!-- Exercises Left TextView -->
-<!--        <TextView-->
-<!--            android:id="@+id/exercise_left"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/margin_large"-->
-<!--            android:layout_marginBottom="@dimen/margin_medium"-->
-<!--            android:text="@string/exercises_left"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="14sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/driving" />-->
 
-        <!-- ProgressBar for workout progress -->
+        <!--app:layout_constraintBottom_toTopOf="@+id/exercise_left"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
 <!--        <TextView-->
 <!--            android:id="@+id/driving"-->

@@ -110,11 +110,16 @@ class ProfileFragment : Fragment(), MemoryManagement {
         // Update progress views (ProgressBar and TextView)
         val cappedProgress = min(progressPercentage, 110.0)
 
+        //val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
+        // val progressTextView = view?.findViewById<TextView>(R.id.percentage)
+
+        //progressBar?.progress = cappedProgress.toInt()
+        // progressTextView?.text = String.format("%.2f%%", cappedProgress)
 //        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
-        val progressTextView = view?.findViewById<TextView>(R.id.percentage)
+        //val progressTextView = view?.findViewById<TextView>(R.id.percentage)
 
 //        progressBar?.progress = cappedProgress.toInt()
-        progressTextView?.text = String.format("%.2f%%", cappedProgress)
+        //progressTextView?.text = String.format("%.2f%%", cappedProgress)
     }
 
     // Function to get the current calendar week
@@ -127,6 +132,7 @@ class ProfileFragment : Fragment(), MemoryManagement {
     }
 
     // Function to calculate total workout time for a specific week
+    /*
     private fun calculateTotalWorkoutTimeForWeek(
         workoutResults: List<WorkoutResult>,
         targetWeek: Int
@@ -135,13 +141,16 @@ class ProfileFragment : Fragment(), MemoryManagement {
             .filter { getCalendarWeek(it.timestamp) == targetWeek }
             .sumOf { it.workoutTimeInMin }
     }
+     */
 
     // Function to get the week of the year from a timestamp
+    /*
     private fun getCalendarWeek(timestamp: Long): Int {
         val calendar = Calendar.getInstance(Locale.getDefault())
         calendar.timeInMillis = timestamp
         return calendar.get(Calendar.WEEK_OF_YEAR)
     }
+     */
 
     // Function to calculate total calories per day from workout results
     private fun calculateTotalCaloriesPerDay(workoutResults: List<WorkoutResult>): Map<String, Double> {
@@ -192,16 +201,18 @@ class ProfileFragment : Fragment(), MemoryManagement {
         val totalCalories = workoutResults?.sumOf { it.calorie } ?: 0.0
 
         // Update the total calories TextView
-//        val totalCaloriesTextView = view?.findViewById<TextView>(R.id.totalCaloriesTextView)
+        // val totalCaloriesTextView = view?.findViewById<TextView>(R.id.totalCaloriesTextView)
 
         val formattedTotalCalories = String.format(Locale.getDefault(), "%.2f", totalCalories)
+/*
+        totalCaloriesTextView?.text =
+            String.format(
+                Locale.getDefault(),
+                getString(R.string.total_calories),
+                formattedTotalCalories
+            )
 
-//        totalCaloriesTextView?.text =
-//            String.format(
-//                Locale.getDefault(),
-//                getString(R.string.total_calories),
-//                formattedTotalCalories
-//            )
+ */
 
         // Map entries for BarChart
         val entries = totalCaloriesPerWeek.entries.mapIndexed { index, entry ->
@@ -209,9 +220,9 @@ class ProfileFragment : Fragment(), MemoryManagement {
         }
 
         val totalExerciseCount = calculateTotalExerciseCountForWeek(workoutResults)
-        val totalExerciseTextView = view?.findViewById<TextView>(R.id.total_exercise)
-        totalExerciseTextView?.text =
-            String.format(getString(R.string.total_exercise), totalExerciseCount)
+        // val totalExerciseTextView = view?.findViewById<TextView>(R.id.total_exercise)
+        // totalExerciseTextView?.text =
+        //     String.format(getString(R.string.total_exercise), totalExerciseCount)
 /*
         val labels = totalCaloriesPerWeek.keys.toList()
         val dataSet = BarDataSet(entries, "Total Calories per Week")
