@@ -14,7 +14,7 @@ import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.poseexercise.R
-import com.example.poseexercise.backgroundlocationtracking.LocationService
+import com.google.android.gms.maps.CameraUpdateFactory // 추가된 부분
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -43,6 +43,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
+                // 권한 요청
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
                 return@getMapAsync
             }
             googleMap?.isMyLocationEnabled = true
@@ -56,6 +61,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 val longitude: Double = it.longitude
                 myPosition = LatLng(latitude, longitude)
                 googleMap?.addMarker(MarkerOptions().position(myPosition!!).title("Start"))
+                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15f)) // 추가된 부분
             }
         }
     }
@@ -87,6 +93,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             myPosition = LatLng(latitude, longitude)
             googleMap?.clear()
             googleMap?.addMarker(MarkerOptions().position(myPosition!!).title("Current Location"))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15f)) // 추가된 부분
         }
     }
 
@@ -97,5 +104,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1 // 추가된 부분
     }
 }

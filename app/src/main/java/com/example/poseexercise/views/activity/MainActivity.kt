@@ -50,6 +50,8 @@ class MainActivity : AppCompatActivity() {
 
         increaseNotificationVolume()
 
+
+
         // Get the navigation host fragment from this Activity
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 //        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
 //        mapFragment.getMapAsync { googleMap -> addMarkers(googleMap)
 //        }
+
 
         val menuItems = arrayOf(
             CbnMenuItem(
@@ -96,6 +99,8 @@ class MainActivity : AppCompatActivity() {
             ),
             0
         )
+
+
 //        setContent {
 //            BackgroundLocationTrackingTheme {
 //                Column(
@@ -136,6 +141,7 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
 
+
         fun clickStart(){
             val clickStart = findViewById<Button>(R.id.start_button)
             clickStart.setOnClickListener {
@@ -155,6 +161,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+
 //                val clickStart = findViewById<Button>(R.id.start_button)
 //        clickStart.setOnClickListener {
 //                val intent = Intent(this, LocationService::class.java).apply {
@@ -177,6 +185,16 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.firstOrNull()
+        fragment?.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
 
 
     /**
@@ -185,7 +203,7 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-    
+
 
 
     companion object {
