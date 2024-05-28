@@ -17,21 +17,22 @@
 package com.example.poseexercise.posedetector
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
-import com.example.poseexercise.data.PostureResult
-import com.example.poseexercise.data.plan.Plan
-import com.example.poseexercise.posedetector.classification.PoseClassifierProcessor
-import com.example.poseexercise.util.VisionProcessorBase
-import com.example.poseexercise.viewmodels.CameraXViewModel
-import com.example.poseexercise.views.graphic.GraphicOverlay
-import com.example.poseexercise.views.graphic.PoseGraphic
 import com.google.android.gms.tasks.Task
 import com.google.android.odml.image.MlImage
 import com.google.mlkit.vision.common.InputImage
+import com.example.poseexercise.views.graphic.GraphicOverlay
+import com.example.poseexercise.posedetector.classification.PoseClassifierProcessor
+import com.example.poseexercise.util.FrameMetadata
+import com.example.poseexercise.util.VisionProcessorBase
+import com.example.poseexercise.views.graphic.PoseGraphic
 import com.google.mlkit.vision.pose.Pose
 import com.google.mlkit.vision.pose.PoseDetection
 import com.google.mlkit.vision.pose.PoseDetector
 import com.google.mlkit.vision.pose.PoseDetectorOptionsBase
+import java.nio.ByteBuffer
+import java.util.ArrayList
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -43,65 +44,52 @@ class PoseDetectorProcessor(
     private val visualizeZ: Boolean,
     private val rescaleZForVisualization: Boolean,
     private val runClassification: Boolean,
-    private val isStreamMode: Boolean,
-    private var cameraXViewModel: CameraXViewModel? = null,
-    notCompletedExercise: List<Plan>
+    private val isStreamMode: Boolean
 ) : VisionProcessorBase<PoseDetectorProcessor.PoseWithClassification>(context) {
 
     private val detector: PoseDetector
     private val classificationExecutor: Executor
 
     private var poseClassifierProcessor: PoseClassifierProcessor? = null
-    private var exercisesToDetect: List<String>? = null
 
     /** Internal class to hold Pose and classification results. */
-    inner class PoseWithClassification(
-        val pose: Pose,
-        classificationResult: Map<String, PostureResult>
-    ) {
-
-        init {
-            // update live data value
-            if (classificationResult.isNotEmpty()) {
-                cameraXViewModel?.postureLiveData?.postValue(classificationResult)
-            }
-        }
-    }
+    class PoseWithClassification(val pose: Pose, val classificationResult: List<String>)
 
     init {
         detector = PoseDetection.getClient(options)
         classificationExecutor = Executors.newSingleThreadExecutor()
-        if (notCompletedExercise.isNotEmpty()) {
-            exercisesToDetect = notCompletedExercise.map { plan -> plan.exercise }
-        }
     }
 
+    override fun processBitmap(bitmap: Bitmap?, graphicOverlay: GraphicOverlay?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun processByteBuffer(
+        data: ByteBuffer?,
+        frameMetadata: FrameMetadata?,
+        graphicOverlay: GraphicOverlay?
+    ) {
+        TODO("Not yet implemented")
+    }
 
     override fun stop() {
         super.stop()
         detector.close()
-        cameraXViewModel = null
     }
 
-    override fun detectInImage(image: InputImage): Task<PoseWithClassification> {
+    public override fun detectInImage(image: InputImage): Task<PoseWithClassification> {
         return detector
             .process(image)
             .continueWith(
                 classificationExecutor
             ) { task ->
-                val pose = task.result
-                var classificationResult: Map<String, PostureResult> = HashMap()
+                val pose = task.getResult()
+                var classificationResult: List<String> = ArrayList()
                 if (runClassification) {
                     if (poseClassifierProcessor == null) {
-                        poseClassifierProcessor =
-                            PoseClassifierProcessor(
-                                context,
-                                isStreamMode,
-                                exercisesToDetect
-                            )
+                        poseClassifierProcessor = PoseClassifierProcessor(context, isStreamMode)
                     }
                     classificationResult = poseClassifierProcessor!!.getPoseResult(pose)
-
                 }
                 PoseWithClassification(pose, classificationResult)
             }
@@ -113,16 +101,11 @@ class PoseDetectorProcessor(
             .continueWith(
                 classificationExecutor
             ) { task ->
-                val pose = task.result
-                var classificationResult: Map<String, PostureResult> = HashMap()
+                val pose = task.getResult()
+                var classificationResult: List<String> = ArrayList()
                 if (runClassification) {
                     if (poseClassifierProcessor == null) {
-                        poseClassifierProcessor =
-                            PoseClassifierProcessor(
-                                context,
-                                isStreamMode,
-                                exercisesToDetect
-                            )
+                        poseClassifierProcessor = PoseClassifierProcessor(context, isStreamMode)
                     }
                     classificationResult = poseClassifierProcessor!!.getPoseResult(pose)
                 }
@@ -130,7 +113,7 @@ class PoseDetectorProcessor(
             }
     }
 
-    override fun onSuccess(
+    public override fun onSuccess(
         poseWithClassification: PoseWithClassification,
         graphicOverlay: GraphicOverlay
     ) {
@@ -140,12 +123,13 @@ class PoseDetectorProcessor(
                 poseWithClassification.pose,
                 showInFrameLikelihood,
                 visualizeZ,
-                rescaleZForVisualization
+                rescaleZForVisualization,
+                poseWithClassification.classificationResult
             )
         )
     }
 
-    override fun onFailure(e: Exception) {
+    public override fun onFailure(e: Exception) {
         Log.e(TAG, "Pose detection failed!", e)
     }
 
@@ -155,6 +139,6 @@ class PoseDetectorProcessor(
     }
 
     companion object {
-        private const val TAG = "PoseDetectorProcessor"
+        private val TAG = "PoseDetectorProcessor"
     }
 }

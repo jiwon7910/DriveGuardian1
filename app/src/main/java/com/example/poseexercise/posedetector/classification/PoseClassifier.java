@@ -17,6 +17,12 @@
 package com.example.poseexercise.posedetector.classification;
 
 import static com.example.poseexercise.posedetector.classification.PoseEmbedding.getPoseEmbedding;
+import static com.example.poseexercise.posedetector.classification.Utils.maxAbs;
+import static com.example.poseexercise.posedetector.classification.Utils.multiply;
+import static com.example.poseexercise.posedetector.classification.Utils.multiplyAll;
+import static com.example.poseexercise.posedetector.classification.Utils.subtract;
+import static com.example.poseexercise.posedetector.classification.Utils.sumAbs;
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.util.Pair;
@@ -34,6 +40,7 @@ import java.util.PriorityQueue;
  * <p>Inspired by K-Nearest Neighbors Algorithm with outlier filtering.
  */
 public class PoseClassifier {
+    private static final String TAG = "PoseClassifier";
     private static final int MAX_DISTANCE_TOP_K = 30;
     private static final int MEAN_DISTANCE_TOP_K = 10;
     // Note Z has a lower weight as it is generally less accurate than X & Y.
@@ -87,7 +94,7 @@ public class PoseClassifier {
 
         // We do flipping on X-axis so we are horizontal (mirror) invariant.
         List<PointF3D> flippedLandmarks = new ArrayList<>(landmarks);
-        Utils.multiplyAll(flippedLandmarks, PointF3D.from(-1, 1, 1));
+        multiplyAll(flippedLandmarks, PointF3D.from(-1, 1, 1));
 
         List<PointF3D> embedding = getPoseEmbedding(landmarks);
         List<PointF3D> flippedEmbedding = getPoseEmbedding(flippedLandmarks);
@@ -110,15 +117,15 @@ public class PoseClassifier {
             float flippedMax = 0;
             for (int i = 0; i < embedding.size(); i++) {
                 originalMax =
-                        Math.max(
+                        max(
                                 originalMax,
-                                Utils.maxAbs(Utils.multiply(Utils.subtract(embedding.get(i), sampleEmbedding.get(i)), axesWeights)));
+                                maxAbs(multiply(subtract(embedding.get(i), sampleEmbedding.get(i)), axesWeights)));
                 flippedMax =
-                        Math.max(
+                        max(
                                 flippedMax,
-                                Utils.maxAbs(
-                                        Utils.multiply(
-                                                Utils.subtract(flippedEmbedding.get(i), sampleEmbedding.get(i)), axesWeights)));
+                                maxAbs(
+                                        multiply(
+                                                subtract(flippedEmbedding.get(i), sampleEmbedding.get(i)), axesWeights)));
             }
             // Set the max distance as min of original and flipped max distance.
             maxDistances.add(new Pair<>(poseSample, min(originalMax, flippedMax)));
@@ -131,7 +138,7 @@ public class PoseClassifier {
         // Keeps higher mean distances on top so we can pop it when top_k size is reached.
         PriorityQueue<Pair<PoseSample, Float>> meanDistances = new PriorityQueue<>(
                 meanDistanceTopK, (o1, o2) -> -Float.compare(o1.second, o2.second));
-        // Retrieve top K poseSamples by least mean distance to remove outliers.
+        // Retrive top K poseSamples by least mean distance to remove outliers.
         for (Pair<PoseSample, Float> sampleDistances : maxDistances) {
             PoseSample poseSample = sampleDistances.first;
             List<PointF3D> sampleEmbedding = poseSample.getEmbedding();
@@ -139,10 +146,10 @@ public class PoseClassifier {
             float originalSum = 0;
             float flippedSum = 0;
             for (int i = 0; i < embedding.size(); i++) {
-                originalSum += Utils.sumAbs(Utils.multiply(
-                        Utils.subtract(embedding.get(i), sampleEmbedding.get(i)), axesWeights));
-                flippedSum += Utils.sumAbs(
-                        Utils.multiply(Utils.subtract(flippedEmbedding.get(i), sampleEmbedding.get(i)), axesWeights));
+                originalSum += sumAbs(multiply(
+                        subtract(embedding.get(i), sampleEmbedding.get(i)), axesWeights));
+                flippedSum += sumAbs(
+                        multiply(subtract(flippedEmbedding.get(i), sampleEmbedding.get(i)), axesWeights));
             }
             // Set the mean distance as min of original and flipped mean distances.
             float meanDistance = min(originalSum, flippedSum) / (embedding.size() * 2);
@@ -161,3 +168,4 @@ public class PoseClassifier {
         return result;
     }
 }
+

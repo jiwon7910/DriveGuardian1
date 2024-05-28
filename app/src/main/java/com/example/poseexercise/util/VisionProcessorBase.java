@@ -57,6 +57,7 @@ import java.util.TimerTask;
  */
 public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
 
+    protected static final String MANUAL_TESTING_LOG = "LogTagForTest";
     private static final String TAG = "VisionProcessorBase";
 
     private final ActivityManager activityManager;

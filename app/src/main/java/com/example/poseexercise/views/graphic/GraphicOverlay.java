@@ -98,6 +98,16 @@ public class GraphicOverlay extends View {
          */
         public abstract void draw(Canvas canvas);
 
+        protected void drawRect(
+                Canvas canvas, float left, float top, float right, float bottom, Paint paint) {
+            canvas.drawRect(left, top, right, bottom, paint);
+        }
+
+        protected void drawText(Canvas canvas, String text, float x, float y, Paint paint) {
+            canvas.drawText(text, x, y, paint);
+        }
+
+
         /**
          * Adjusts the supplied value from the image scale to the view scale.
          */
@@ -133,7 +143,6 @@ public class GraphicOverlay extends View {
         public Matrix getTransformationMatrix() {
             return overlay.transformationMatrix;
         }
-
 
         /**
          * Given the {@code zInImagePixel}, update the color for the passed in {@code paint}. The color will be

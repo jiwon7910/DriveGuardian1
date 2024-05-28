@@ -40,6 +40,8 @@ public final class CameraXViewModel extends AndroidViewModel {
     private static final String TAG = "CameraXViewModel";
     private MutableLiveData<ProcessCameraProvider> cameraProviderLiveData;
 
+    /*
+
     private final MutableLiveData<Map<String, PostureResult>> postureLiveData = new MutableLiveData<>();
 
     public MutableLiveData<Map<String, PostureResult>> getPostureLiveData() {
@@ -51,6 +53,8 @@ public final class CameraXViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getTriggerClassification() {
         return triggerClassification;
     }
+
+     */
 
 
     /**
