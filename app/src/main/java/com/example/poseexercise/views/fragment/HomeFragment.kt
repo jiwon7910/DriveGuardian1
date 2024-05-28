@@ -2,8 +2,10 @@ package com.example.poseexercise.views.fragment
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.Criteria
 import android.location.Location
@@ -72,6 +74,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), /*PlanAdapter.ItemListene
 
     private var googleMap: GoogleMap? = null // 추가된 부분
     private var myPosition: LatLng? = null // 추가된 부분
+    private lateinit var locationUpdateReceiver: BroadcastReceiver // 추가된 부분
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -140,6 +144,17 @@ class HomeFragment : Fragment(R.layout.fragment_home), /*PlanAdapter.ItemListene
         initializeMap() // 추가된 부분
         clickStart() // 추가된 부분
         clickStop() // 추가된 부분
+
+        // BroadcastReceiver 등록 // 추가된 부분
+        locationUpdateReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val latitude = intent?.getDoubleExtra("latitude", 0.0) ?: return
+                val longitude = intent.getDoubleExtra("longitude", 0.0)
+                Log.d("HomeFragment", "Received location update: $latitude, $longitude")
+                updateMapLocation(latitude, longitude)
+            }
+        }
+        requireActivity().registerReceiver(locationUpdateReceiver, IntentFilter("LOCATION_UPDATE"))
     }
 
     // 추가된 메서드
@@ -192,10 +207,19 @@ class HomeFragment : Fragment(R.layout.fragment_home), /*PlanAdapter.ItemListene
         }
     }
 
+    private fun updateMapLocation(latitude: Double, longitude: Double) { // 추가된 메서드
+        myPosition = LatLng(latitude, longitude)
+        googleMap?.clear()
+        googleMap?.addMarker(MarkerOptions().position(myPosition!!).title("Current Location"))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 18f))
+        Log.d("HomeFragment", "Location changed: $latitude, $longitude")
+    }
+
     // 추가된 메서드
     private fun clickStart() {
         val clickStart = view?.findViewById<Button>(R.id.start_button)
         clickStart?.setOnClickListener {
+            Log.d("HomeFragment", "Start button clicked")
             val intent = Intent(requireContext(), LocationService::class.java).apply {
                 action = LocationService.ACTION_START
                 requireContext().startService(this)
@@ -288,6 +312,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), /*PlanAdapter.ItemListene
         clearMemory()
         super.onDestroy()
     }
+
+    override fun onDestroyView() { // 추가된 메서드
+        super.onDestroyView()
+        requireActivity().unregisterReceiver(locationUpdateReceiver)
+    }
+
 
     override fun onProviderEnabled(provider: String) {
     }
