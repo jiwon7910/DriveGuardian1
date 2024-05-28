@@ -9,6 +9,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.core.app.ActivityCompat
@@ -52,19 +53,33 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             }
             googleMap?.isMyLocationEnabled = true
 
-            val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val criteria = Criteria()
-            val provider: String = locationManager.getBestProvider(criteria, true) ?: return@getMapAsync
-            val location: Location? = locationManager.getLastKnownLocation(provider)
-            location?.let {
-                val latitude: Double = it.latitude
-                val longitude: Double = it.longitude
-                myPosition = LatLng(latitude, longitude)
-                googleMap?.addMarker(MarkerOptions().position(myPosition!!).title("Start"))
-                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15f)) // 추가된 부분
-            }
+            // 이화여자대학교의 좌표를 설정
+            val ewhaPosition = LatLng(37.5610, 126.9468)
+            myPosition = ewhaPosition
+
+            // 이화여자대학교에 마커 추가 및 카메라 이동
+            googleMap?.addMarker(MarkerOptions().position(myPosition!!).title("Ewha Womans University"))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 18f))
+
+            // 로그 추가
+            Log.d("HomeFragment", "Map initialized with Ewha Womans University")
         }
     }
+
+    override fun onLocationChanged(location: Location) {
+        location.let {
+            val latitude: Double = it.latitude
+            val longitude: Double = it.longitude
+            myPosition = LatLng(latitude, longitude)
+            googleMap?.clear()
+            googleMap?.addMarker(MarkerOptions().position(myPosition!!).title("Current Location"))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 18f))
+
+            // 로그 추가
+            Log.d("HomeFragment", "Location changed: $latitude, $longitude")
+        }
+    }
+
 
     private fun clickStart() {
         val clickStart = view?.findViewById<Button>(R.id.start_button)
@@ -86,16 +101,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         }
     }
 
-    override fun onLocationChanged(location: Location) {
-        location.let {
-            val latitude: Double = it.latitude
-            val longitude: Double = it.longitude
-            myPosition = LatLng(latitude, longitude)
-            googleMap?.clear()
-            googleMap?.addMarker(MarkerOptions().position(myPosition!!).title("Current Location"))
-            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15f)) // 추가된 부분
-        }
-    }
+
 
     override fun onProviderEnabled(provider: String) {
     }
