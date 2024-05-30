@@ -187,8 +187,29 @@ class HomeFragment : Fragment(R.layout.fragment_home), /*PlanAdapter.ItemListene
             googleMap?.addMarker(MarkerOptions().position(myPosition!!).title("Ewha Womans University"))
             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 18f))
 
+            // 지도 긴 클릭 이벤트 설정
+            setMapLongClick(googleMap)
+
             // 로그 추가
             Log.d("HomeFragment", "Map initialized with Ewha Womans University")
+        }
+    }
+
+    // 지도 긴 클릭 이벤트 설정 메서드
+    private fun setMapLongClick(map: GoogleMap?) {
+        map?.setOnMapLongClickListener { latLng ->
+            val snippet = String.format(
+                Locale.getDefault(),
+                "Lat: %1$.5f, Long: %2$.5f",
+                latLng.latitude,
+                latLng.longitude
+            )
+            map.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .title("Dropped Pin")
+                    .snippet(snippet)
+            )
         }
     }
 
@@ -317,7 +338,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), /*PlanAdapter.ItemListene
         super.onDestroyView()
         requireActivity().unregisterReceiver(locationUpdateReceiver)
     }
-
 
     override fun onProviderEnabled(provider: String) {
     }
