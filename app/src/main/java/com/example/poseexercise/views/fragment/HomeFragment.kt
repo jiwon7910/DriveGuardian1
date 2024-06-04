@@ -1,14 +1,25 @@
 package com.example.poseexercise.views.fragment
-
+import android.Manifest
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.location.Criteria
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,8 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.poseexercise.R
-//import com.example.poseexercise.adapters.PlanAdapter
-//import com.example.poseexercise.adapters.RecentActivityAdapter
+import com.example.poseexercise.backgroundlocationtracking.LocationService // 추가된 부분
 import com.example.poseexercise.data.database.AppRepository
 import com.example.poseexercise.data.plan.Plan
 import com.example.poseexercise.data.results.RecentActivityItem
@@ -25,9 +35,13 @@ import com.example.poseexercise.data.results.WorkoutResult
 import com.example.poseexercise.util.MemoryManagement
 import com.example.poseexercise.util.MyApplication
 import com.example.poseexercise.util.MyUtils
-// import com.example.poseexercise.viewmodels.AddPlanViewModel
 import com.example.poseexercise.viewmodels.HomeViewModel
 import com.example.poseexercise.viewmodels.ResultViewModel
+import com.google.android.gms.maps.CameraUpdateFactory // 추가된 부분
+import com.google.android.gms.maps.GoogleMap // 추가된 부분
+import com.google.android.gms.maps.SupportMapFragment // 추가된 부분
+import com.google.android.gms.maps.model.LatLng // 추가된 부분
+import com.google.android.gms.maps.model.MarkerOptions // 추가된 부분
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,7 +51,7 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.min
 
-class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement {
+class HomeFragment : Fragment(R.layout.fragment_home), /*PlanAdapter.ItemListener,*/ MemoryManagement, LocationListener { // 변경된 부분
     @Suppress("PropertyName")
     private val TAG = "DriveGuardian Home Fragment"
     private lateinit var homeViewModel: HomeViewModel
@@ -47,15 +61,20 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
     private var planList: List<Plan>? = emptyList()
     private var notCompletePlanList: MutableList<Plan>? = Collections.emptyList()
     // private var today: String = DateFormat.format("EEEE", Date()) as String
-    // private lateinit var progressText: TextView
+    private lateinit var progressText: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var noPlanTV: TextView
-    // private lateinit var progressBar: ProgressBar
+    private lateinit var progressBar: ProgressBar
     private lateinit var progressPercentage: TextView
     private var workoutResults: List<WorkoutResult>? = null
     private lateinit var appRepository: AppRepository
     // private lateinit var addPlanViewModel: AddPlanViewModel
     // private lateinit var adapter: PlanAdapter
+
+    private var googleMap: GoogleMap? = null // 추가된 부분
+    private var myPosition: LatLng? = null // 추가된 부분
+    private lateinit var locationUpdateReceiver: BroadcastReceiver // 추가된 부분
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,15 +87,15 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Initialize RecyclerView and its adapter for recent activity
-        // progressText = view.findViewById(R.id.exercise_left)
+//        progressText = view.findViewById(R.id.exercise_left)
         // recyclerView = view.findViewById(R.id.today_plans)
         // recentActivityRecyclerView = view.findViewById(R.id.recentActivityRecyclerView)
         // recentActivityAdapter = RecentActivityAdapter(emptyList())
         // recentActivityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         // recentActivityRecyclerView.adapter = recentActivityAdapter
         // noPlanTV = view.findViewById(R.id.no_plan)
-        // progressBar = view.findViewById(R.id.progress_bar)
-        // progressPercentage = view.findViewById(R.id.progress_text)
+//        progressBar = view.findViewById(R.id.progress_bar)
+//        progressPercentage = view.findViewById(R.id.progress_text)
         appRepository = AppRepository(requireActivity().application)
         // Initialize ViewModel
         resultViewModel = ResultViewModel(MyApplication.getInstance())
@@ -109,7 +128,6 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
                 recentActivityRecyclerView.isVisible = true
             }
              */
-
         }
         // Initialize home view model, RecyclerView and its adapter for today's plans
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
@@ -121,40 +139,132 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
                 // updateResultFromDatabase(result1, result2)
             }
         }
-    }
 
-    /*
-    private fun updateResultFromDatabase(plan: List<Plan>?, notCompleted: MutableList<Plan>?) {
-        planList = plan
-        notCompletePlanList = notCompleted
-        adapter = PlanAdapter(requireContext())
-        planList?.let {
-            if (it.isNotEmpty()) {
-                it.map { plan ->
-                    if (plan.timeCompleted?.let { it1 -> getDayFromTimestamp(it1) } != today) {
-                        lifecycleScope.launch {
-                            // addPlanViewModel.updateComplete(false, null, plan.id)
-                        }
-                    }
-                }
-            } else {
-                Log.d(TAG, "plan list is empty")
+        initializeMap() // 추가된 부분
+        clickStart() // 추가된 부분
+        clickStop() // 추가된 부분
+
+        // BroadcastReceiver 등록 // 추가된 부분
+        locationUpdateReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val latitude = intent?.getDoubleExtra("latitude", 0.0) ?: return
+                val longitude = intent.getDoubleExtra("longitude", 0.0)
+                Log.d("HomeFragment", "Received location update: $latitude, $longitude")
+                updateMapLocation(latitude, longitude)
             }
         }
-
-//        Display the not completed plans
-        val exerciseLeftString =
-            resources.getString(R.string.exercise_left, notCompletePlanList?.size ?: 0)
-        progressText.text = exerciseLeftString
-        recyclerView.adapter = adapter
-        adapter.setListener(this)
-        notCompletePlanList?.let { adapter.setPlans(it) }
-        // updateEmptyPlan(notCompletePlanList)
+        requireActivity().registerReceiver(locationUpdateReceiver, IntentFilter("LOCATION_UPDATE"))
     }
 
-     */
+    // 추가된 메서드
+    private fun initializeMap() {
+        val fm = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        fm.getMapAsync { map ->
+            googleMap = map
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // 권한 요청
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+                return@getMapAsync
+            }
+            googleMap?.isMyLocationEnabled = true
 
+            // 이화여자대학교의 좌표를 설정
+            val ewhaPosition = LatLng(37.5610, 126.9468)
+            myPosition = ewhaPosition
 
+            // 이화여자대학교에 마커 추가 및 카메라 이동
+            myPosition?.let {
+                googleMap?.addMarker(MarkerOptions().position(it).title("Ewha Womans University"))
+                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 18f))
+            }
+
+            // 지도 긴 클릭 이벤트 설정
+            setMapLongClick(googleMap)
+
+            // 로그 추가
+            Log.d("HomeFragment", "Map initialized with Ewha Womans University")
+        }
+    }
+
+    // 지도 긴 클릭 이벤트 설정 메서드
+    private fun setMapLongClick(map: GoogleMap?) {
+        map?.setOnMapLongClickListener { latLng ->
+            val snippet = String.format(
+                Locale.getDefault(),
+                "Lat: %1$.5f, Long: %2$.5f",
+                latLng.latitude,
+                latLng.longitude
+            )
+            map.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .title("Dropped Pin")
+                    .snippet(snippet)
+            )
+        }
+    }
+
+    // 추가된 메서드
+    override fun onLocationChanged(location: Location) {
+        location.let {
+            val latitude: Double = it.latitude
+            val longitude: Double = it.longitude
+            myPosition = LatLng(latitude, longitude)
+            myPosition?.let {
+                googleMap?.clear()
+                googleMap?.addMarker(MarkerOptions().position(it).title("Current Location"))
+                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 18f))
+            }
+
+            // 로그 추가
+            Log.d("HomeFragment", "Location changed: $latitude, $longitude")
+        }
+    }
+
+    private fun updateMapLocation(latitude: Double, longitude: Double) { // 추가된 메서드
+        myPosition = LatLng(latitude, longitude)
+        myPosition?.let {
+            googleMap?.clear()
+            googleMap?.addMarker(MarkerOptions().position(it).title("Current Location"))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 18f))
+            Log.d("HomeFragment", "Location changed: $latitude, $longitude")
+        }
+    }
+
+    // 추가된 메서드
+    private fun clickStart() {
+        val clickStart = view?.findViewById<Button>(R.id.start_button)
+        clickStart?.setOnClickListener {
+            Log.d("HomeFragment", "Start button clicked")
+            val intent = Intent(requireContext(), LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                requireContext().startService(this)
+            }
+        }
+    }
+
+    // 추가된 메서드
+    private fun clickStop() {
+        val clickStop = view?.findViewById<Button>(R.id.stop_button)
+        clickStop?.setOnClickListener {
+            val intent = Intent(requireContext(), LocationService::class.java).apply {
+                action = LocationService.ACTION_STOP
+                requireContext().startService(this)
+            }
+        }
+    }
+
+    // 기존 메서드
     private fun loadDataAndSetupChart() {
         lifecycleScope.launch(Dispatchers.IO) {
             // Fetch workout results asynchronously
@@ -185,12 +295,11 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
 
                 }
             }
-
              */
         }
     }
-/*
-    // Function to update progress views (ProgressBar and TextView)
+
+    // 기존 메서드
     private fun updateProgressViews(progress: Int) {
         // Check if progressPercentage is greater than 0
         if (progress > 0) {
@@ -205,9 +314,7 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
         }
     }
 
- */
-
-    // Return true if the timestamp is today's date
+    // 기존 메서드
     private fun isToday(s: Long, locale: Locale = Locale.getDefault()): Boolean {
         return try {
             val sdf = SimpleDateFormat("MM/dd/yyyy", locale)
@@ -218,64 +325,35 @@ class HomeFragment : Fragment(), /*PlanAdapter.ItemListener,*/ MemoryManagement 
             false
         }
     }
-    /*
 
-    // Get the day from which the plan was marked as complete
-    private fun getDayFromTimestamp(time: Long, locale: Locale = Locale.getDefault()): String? {
-        return try {
-            val sdf = SimpleDateFormat("EEEE", locale)
-            val netDate = Date(time)
-            sdf.format(netDate)
-        } catch (e: Exception) {
-            e.toString()
-        }
-    }
-
-    // Delete the plan when user click on delete icon
-
-    override fun onItemClicked(planId: Int, position: Int) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-        // Show a dialog for user to confirm the choice
-        builder
-            .setMessage("Are you sure you want to delete the plan?")
-            .setTitle("Delete plan")
-            .setPositiveButton("Delete") { dialog, _ ->
-                // Delete the plan from database
-                lifecycleScope.launch {
-                    // addPlanViewModel.deletePlan(planId)
-                }
-                notCompletePlanList?.removeAt(position)
-                adapter.notifyItemRemoved(position)
-                updateEmptyPlan(notCompletePlanList)
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                // Cancel the action
-                dialog.dismiss()
-            }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-    }
-
-    // Hide the recycler view if there are no plan left for today
-    private fun updateEmptyPlan(plans: MutableList<Plan>?) {
-        if (plans.isNullOrEmpty()) {
-            noPlanTV.text = getString(R.string.there_is_no_plan_set_at_the_moment)
-            recyclerView.visibility = View.GONE
-        } else {
-            recyclerView.visibility = View.VISIBLE
-        }
-    }
-     */
-
+    // 기존 메서드
     override fun clearMemory() {
         planList = null
         notCompletePlanList = null
         workoutResults = null
     }
 
+    // 기존 메서드
     override fun onDestroy() {
         clearMemory()
         super.onDestroy()
+    }
+
+    override fun onDestroyView() { // 추가된 메서드
+        super.onDestroyView()
+        requireActivity().unregisterReceiver(locationUpdateReceiver)
+    }
+
+    override fun onProviderEnabled(provider: String) {
+    }
+
+    override fun onProviderDisabled(provider: String) {
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1 // 추가된 부분
     }
 }
